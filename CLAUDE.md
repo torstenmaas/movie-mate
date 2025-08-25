@@ -1,3 +1,16 @@
+> # SPARC-Kompatibilität (Claude-Flow)
+> **Nur für Agent-Ausführung – ergänzt die Regeln unten, ohne sie zu ersetzen.**
+> - **Golden Rule:** *1 Message = alle zusammengehörigen Operationen.* Dateizugriffe, Bash-Befehle, Todos in **einem** Schritt bündeln.
+> - **Nie ins Repo-Root schreiben.** Verwende unser Monorepo-Mapping:
+    >   - Code: `apps/<app>/src`, `packages/<scope>/<pkg>/src`
+>   - Tests: `__tests__` neben `src`
+>   - Docs: `docs/`, Config: `config/`, Skripte: `scripts/`
+> - **Keine Secrets in Dateien.** Nur ENV/Secrets-Manager verwenden.
+> - **Kleine Diffs, eindeutige Commits, PR-Modus an.** (Squash-Merge)
+> - **Vor jedem Schritt:** `PLANNING.md`, `TASKS.md` lesen; **nur ungebockte** Tasks anfassen.
+>
+> Diese Regeln sind **additiv** zu den Projekt-Konventionen unten (Namensregeln, Reviews, A11y, Tests, Observability, Security, etc.).
+>
 # CLAUDE.md - Claude Development Instructions
 
 ## Purpose
@@ -107,7 +120,7 @@ type(scope): description
 
 ## Priority Order
 1. Blocking bugs
-2. Security issues  
+2. Security issues
 3. Test failures
 4. Feature tasks (per TASKS.md order)
 5. Refactoring
