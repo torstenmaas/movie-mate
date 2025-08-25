@@ -1,0 +1,8 @@
+{
+  "default": {
+    "mode": "code",
+    "branch": "main",
+    "commit": true,
+    "pullRequest": true
+  }
+}

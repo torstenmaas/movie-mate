@@ -1,23 +1,41 @@
-# dependencies
+# Abhängigkeiten & Build Artefakte
 node_modules/
 .pnpm-store/
-
-# build
 dist/
 coverage/
-.next/
+build/
 
-# env & secrets
+# Next.js / React
+.next/
+out/
+
+# Env & Secrets
 .env
 .env.*
+!.env.example
 .secrets/
 *.key
 *.pem
 
-# tools & IDE
+# IDE & OS
 .idea/
+.vscode/*
+!.vscode/settings.json   # eigene Team-Settings erlaubt
 .DS_Store
 *.log
 .tmp/
+*.swp
+
+# Prisma
+packages/@infra/prisma/migrations/
+
+# Test & Tools
 turbo/
-.vscode/.history/
+.jest-cache/
+jest-stare/
+
+# Claude Flow / SPARC
+.claude-flow/
+.sparc/
+.flow-log/
+*.flowstats.json
