@@ -26,9 +26,6 @@ out/
 .tmp/
 *.swp
 
-# Prisma
-packages/@infra/prisma/migrations/
-
 # Test & Tools
 turbo/
 .jest-cache/
