@@ -13,17 +13,34 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Node zuerst
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          check-latest: true
 
+      # pnpm installieren (vor dem Caching!)
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
 
+      # pnpm-Store cachen
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # Install / Lint / Typecheck / Test
       - name: Install
         run: pnpm install --frozen-lockfile=false
 
