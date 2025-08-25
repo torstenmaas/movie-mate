@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build
+dist/
+coverage/
+.next/
+
+# env & secrets
+.env
+.env.*
+.secrets/
+*.key
+*.pem
+
+# tools & IDE
+.idea/
+.DS_Store
+*.log
+.tmp/
+turbo/
+.vscode/.history/
