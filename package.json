@@ -13,7 +13,10 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "test": "jest --passWithNoTests",
-    "prepare": "husky install || true"
+    "prepare": "husky install || true",
+    "prisma:generate": "cd packages/@infra/prisma && npm run generate",
+    "prisma:migrate": "cd packages/@infra/prisma && DATABASE_URL=$DATABASE_URL npx prisma migrate deploy",
+    "prisma:seed": "cd packages/@infra/prisma && DATABASE_URL=$DATABASE_URL npm run seed"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

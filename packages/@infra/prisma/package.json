@@ -1,0 +1,25 @@
+{
+  "name": "@infra/prisma",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Prisma database client and migrations for Movie Mate",
+  "main": "./client/index.js",
+  "types": "./client/index.d.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "seed": "tsx seed.ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "tsx": "^4.7.1",
+    "@types/node": "^20.14.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.12"
+  }
+}

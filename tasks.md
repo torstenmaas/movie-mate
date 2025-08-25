@@ -57,14 +57,14 @@
 
 ## Database Layer
 
-- [ ] Install Drizzle ORM
-- [ ] Configure Drizzle with PostgreSQL
+- [x] Initialize Prisma + seed scripts (2025-08-25)
+- [ ] Configure Drizzle with PostgreSQL (Note: Using Prisma instead)
 - [ ] Create database schema module
 - [ ] Add migration scripts
-- [ ] Create user entity with email/displayName
-- [ ] Create session entity
-- [ ] Create email verification entity
-- [ ] Create password reset entity
+- [x] Create user entity with email/displayName (2025-08-25)
+- [x] Create session entity (2025-08-25)
+- [x] Create email verification entity (2025-08-25)
+- [x] Create password reset entity (2025-08-25)
 - [ ] Setup migration CI/CD
 - [ ] Add database health check
 
@@ -130,7 +130,13 @@
 
 ## Completed Tasks
 
-<!-- Tasks werden hier mit Datum verschoben -->
+- [x] Initialize Prisma + seed scripts (2025-08-25)
+  - Created packages/@infra/prisma with PostgreSQL 16 configuration
+  - Generated initial migration with User, Session, EmailVerification, and PasswordReset models
+  - Created seed script with dummy user (preferredLocale='de')
+  - Added prisma:generate, prisma:migrate, prisma:seed scripts to root package.json
+  - Created integration test for database connection
+  - All entities follow the planned data model from PLANNING.md
 
 ---
 
