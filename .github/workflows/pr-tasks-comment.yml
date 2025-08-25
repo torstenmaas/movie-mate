@@ -1,0 +1,44 @@
+name: PR Tasks Comment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build tasks summary
+        id: tasks
+        run: |
+          echo 'SUMMARY<<EOF' >> $GITHUB_OUTPUT
+          echo '### Tasks aus `TASKS.md`' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '*(Nur Anzeige. Nichts wird automatisch abgehakt.)*' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          awk '/^- \[[ xX]\] /{print}' TASKS.md | sed 's/^/- /' >> $GITHUB_OUTPUT
+          echo '' >> $GITHUB_OUTPUT
+          echo '📄 Quelle: `TASKS.md` (Repo-Root)' >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+      - name: Upsert PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = process.env.SUMMARY
+            const { owner, repo } = context.repo
+            const issue_number = context.payload.pull_request.number
+            const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number })
+            const bot = comments.find(c => c.user.type === 'Bot' && c.body?.includes('Tasks aus `TASKS.md`'))
+            if (bot) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: bot.id, body })
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body })
+            }
+        env:
+          SUMMARY: ${{ steps.tasks.outputs.SUMMARY }}

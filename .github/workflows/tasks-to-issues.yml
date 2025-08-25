@@ -1,0 +1,46 @@
+name: Tasks to Issues
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: "Label für neue Issues"
+        default: "backlog"
+        required: false
+      milestone:
+        description: "Milestone-Nummer (optional)"
+        required: false
+
+jobs:
+  create_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse open tasks from TASKS.md
+        id: parse
+        run: |
+          node -e "const fs=require('fs'); const raw=fs.readFileSync('TASKS.md','utf8').split('\\n').filter(l=>/^\\- \\[ \\] /.test(l)); console.log(JSON.stringify(raw.map(l=>l.replace(/^\\- \\[ \\] /,''))));"
+
+      - name: Create issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const titles = JSON.parse(process.env.TASK_TITLES || '[]')
+            const { owner, repo } = context.repo
+            const label = core.getInput('label') || 'backlog'
+            const milestone = core.getInput('milestone') ? Number(core.getInput('milestone')) : undefined
+            for (const t of titles) {
+              await github.rest.issues.create({
+                owner, repo,
+                title: t.substring(0, 240),
+                labels: [label],
+                milestone,
+                body: 'Erzeugt aus `TASKS.md`.\\n\\n**Hinweis:** Bitte vor dem Abhaken prüfen.'
+              })
+            }
+        env:
+          TASK_TITLES: ${{ steps.parse.outputs.stdout }}
