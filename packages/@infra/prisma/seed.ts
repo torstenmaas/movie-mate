@@ -7,8 +7,10 @@ async function main() {
   console.log('🌱 Starting seed...');
 
   // Create dummy user with preferredLocale='de'
-  const dummyUser = await prisma.user.create({
-    data: {
+  const dummyUser = await prisma.user.upsert({
+    where: { email: 'test@moviemate.app' },
+    update: {}, // hier könnte man später Update-Logik einfügen
+    create: {
       email: 'test@moviemate.app',
       displayName: 'Test Benutzer',
       hashedPassword: '$argon2id$v=19$m=65536,t=3,p=4$' + randomBytes(32).toString('base64'),

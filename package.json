@@ -14,13 +14,16 @@
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "test": "jest --passWithNoTests",
     "prepare": "husky install || true",
-    "prisma:generate": "cd packages/@infra/prisma && npm run generate",
-    "prisma:migrate": "cd packages/@infra/prisma && DATABASE_URL=$DATABASE_URL npx prisma migrate deploy",
-    "prisma:seed": "cd packages/@infra/prisma && DATABASE_URL=$DATABASE_URL npm run seed"
+    "prisma:generate": "pnpm exec prisma generate --schema packages/@infra/prisma/prisma/schema.prisma",
+    "prisma:migrate:dev": "dotenv -e .env -- pnpm exec prisma migrate dev --schema packages/@infra/prisma/prisma/schema.prisma",
+    "prisma:migrate:deploy": "dotenv -e .env -- pnpm exec prisma migrate deploy --schema packages/@infra/prisma/prisma/schema.prisma",
+    "prisma:reset": "dotenv -e .env -- pnpm exec prisma migrate reset --force --schema packages/@infra/prisma/prisma/schema.prisma",
+    "prisma:seed": "dotenv -e .env -- tsx packages/@infra/prisma/seed.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
@@ -29,7 +32,9 @@
     "husky": "^9.0.11",
     "jest": "^29.7.0",
     "prettier": "^3.3.3",
+    "prisma": "^6.14.0",
     "ts-jest": "^29.2.5",
+    "tsx": "^4.20.5",
     "typescript": "^5.5.4"
   }
 }
