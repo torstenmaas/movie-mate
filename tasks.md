@@ -2,21 +2,21 @@
 
 ## Setup Phase
 
-- [ ] Initialize monorepo structure with npm workspaces
-- [ ] Create apps/api directory for NestJS
-- [ ] Initialize NestJS application with CLI
-- [ ] Configure TypeScript for strict mode
-- [ ] Setup ESLint and Prettier
-- [ ] Create .env.example file
-- [ ] Setup .gitignore properly
-- [ ] Initialize git repository
+- [x] Initialize monorepo structure with npm workspaces (2025-08-28)
+- [x] Create apps/api directory for NestJS (2025-08-28)
+- [x] Initialize NestJS application (manual scaffold; not CLI) (2025-08-28)
+- [x] Configure TypeScript for strict mode (2025-08-28)
+- [x] Setup ESLint and Prettier (2025-08-28)
+- [x] Create .env.example file (2025-08-28)
+- [x] Setup .gitignore properly (2025-08-28)
+- [x] Initialize git repository (2025-08-28)
 
 ## API Foundation
 
-- [ ] Install core NestJS dependencies
-- [ ] Create health check module
-- [ ] Implement GET /health endpoint
-- [ ] Add health check tests
+- [x] Install core NestJS dependencies (2025-08-28)
+- [x] Create health check module (2025-08-28)
+- [x] Implement GET /health endpoint (2025-08-28)
+- [x] Add health check tests (unit) (2025-08-28)
 - [ ] Setup Swagger documentation
 - [ ] Configure CORS properly
 - [ ] Add request logging middleware
@@ -24,22 +24,22 @@
 
 ## Testing Setup
 
-- [ ] Configure Jest for NestJS
-- [ ] Create test database setup
-- [ ] Add Supertest for e2e tests
+- [x] Configure Jest for NestJS (2025-08-28)
+- [x] Create test database setup (Testcontainers) (2025-08-28)
+- [x] Add Supertest for e2e tests (library added) (2025-08-28)
 - [ ] Create first integration test for /health
-- [ ] Setup test coverage reporting
+- [x] Setup test coverage reporting (2025-08-28)
 - [ ] Add pre-commit hooks for tests
 
 ## CI/CD Pipeline
 
-- [ ] Create .github/workflows directory
-- [ ] Setup Node.js CI workflow
-- [ ] Add test job to workflow
+- [x] Create .github/workflows directory (2025-08-28)
+- [x] Setup Node.js CI workflow (2025-08-28)
+- [x] Add test job to workflow (2025-08-28)
 - [ ] Add build job to workflow
 - [ ] Setup Docker build in CI
 - [ ] Configure Dockerfile for NestJS
-- [ ] Add Docker compose for local dev
+- [x] Add Docker compose for local dev (2025-08-28)
 - [ ] Setup webhook for Coolify
 
 ## Coolify Deployment
@@ -60,7 +60,7 @@
 - [x] Initialize Prisma + seed scripts (2025-08-25)
 - [ ] Configure Drizzle with PostgreSQL (Note: Using Prisma instead)
 - [ ] Create database schema module
-- [ ] Add migration scripts
+- [x] Add migration scripts (2025-08-25)
 - [x] Create user entity with email/displayName (2025-08-25)
 - [x] Create session entity (2025-08-25)
 - [x] Create email verification entity (2025-08-25)
