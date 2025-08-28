@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# Ignore generated Prisma client (JS and d.ts)
+packages/@infra/prisma/client/
+packages/@infra/prisma/client/**

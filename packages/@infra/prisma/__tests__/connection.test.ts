@@ -1,5 +1,8 @@
 import { PrismaClient } from '../client';
 
+const RUN_DB = process.env.RUN_DB_TESTS === 'true';
+const itIf = RUN_DB ? it : it.skip;
+
 describe('Database Connection', () => {
   let prisma: PrismaClient;
 
@@ -11,26 +14,28 @@ describe('Database Connection', () => {
     await prisma.$disconnect();
   });
 
-  it('should connect to the database successfully', async () => {
+  itIf('should connect to the database successfully', async () => {
     // Test connection by running a simple query
-    const result = await prisma.$queryRaw`SELECT 1 as result`;
+    const result = await prisma.$queryRaw<Array<{ result: number }>>`SELECT 1 as result`;
     expect(result).toBeDefined();
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('result', 1);
   });
 
-  it('should have correct database version (PostgreSQL 16)', async () => {
+  itIf('should have correct database version (PostgreSQL 16)', async () => {
     const versionResult = await prisma.$queryRaw<Array<{ version: string }>>`
       SELECT version() as version
     `;
-    
+
     expect(versionResult).toBeDefined();
-    expect(versionResult[0].version).toMatch(/PostgreSQL/);
+    expect(versionResult.length).toBeGreaterThan(0);
+    const first = versionResult[0]!;
+    expect(first.version).toMatch(/PostgreSQL/);
     // Note: Version check is informational, may vary in local dev
-    console.log('Database version:', versionResult[0].version);
+    console.log('Database version:', first.version);
   });
 
-  it('should be able to perform CRUD operations on User model', async () => {
+  itIf('should be able to perform CRUD operations on User model', async () => {
     // Create a test user
     const testUser = await prisma.user.create({
       data: {
@@ -74,7 +79,7 @@ describe('Database Connection', () => {
     expect(deletedUser).toBeNull();
   });
 
-  it('should handle transactions correctly', async () => {
+  itIf('should handle transactions correctly', async () => {
     const email = `transaction-test-${Date.now()}@example.com`;
 
     const result = await prisma.$transaction(async (tx) => {
