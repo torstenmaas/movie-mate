@@ -1,0 +1,24 @@
+{
+  "name": "@apps/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/src/main.js",
+  "types": "dist/src/main.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/main.js"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.1.6",
+    "@types/supertest": "^2.0.16",
+    "supertest": "^7.1.4"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  }
+}
