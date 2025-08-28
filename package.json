@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "test": "jest --passWithNoTests",
+    "test:db": "RUN_DB_TESTS=true jest --passWithNoTests",
     "prepare": "husky install || true",
     "prisma:generate": "pnpm exec prisma generate --schema packages/@infra/prisma/prisma/schema.prisma",
     "prisma:migrate:dev": "dotenv -e .env -- pnpm exec prisma migrate dev --schema packages/@infra/prisma/prisma/schema.prisma",
@@ -21,6 +22,7 @@
     "prisma:seed": "dotenv -e .env -- tsx packages/@infra/prisma/seed.ts"
   },
   "devDependencies": {
+    "@testcontainers/postgresql": "^11.5.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
     "dotenv-cli": "^10.0.0",
