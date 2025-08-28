@@ -75,3 +75,6 @@ coordination/orchestration/*
 *.sqlite
 *.sqlite-journal
 *.sqlite-wal
+
+# Runtime temp
+tmp/
