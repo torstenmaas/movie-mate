@@ -1,11 +1,14 @@
-# Abhängigkeiten & Build Artefakte
+# Dependencies & Build Artefacts
 node_modules/
 .pnpm-store/
 dist/
 coverage/
 build/
+.turbo/
+.jest-cache/
+jest-stare/
 
-# Next.js / React
+# Framework Outputs
 .next/
 out/
 
@@ -20,19 +23,58 @@ out/
 # IDE & OS
 .idea/
 .vscode/*
-!.vscode/settings.json   # eigene Team-Settings erlaubt
+!.vscode/settings.json
 .DS_Store
 *.log
-.tmp/
+*.tmp
 *.swp
 
-# Test & Tools
-turbo/
-.jest-cache/
-jest-stare/
+# TS/JS Caches
+*.tsbuildinfo
+.eslintcache
+pnpm-debug.log*
+npm-debug.log*
 
-# Claude Flow / SPARC
+# Claude Flow / SPARC / Swarm
+.claude/
 .claude-flow/
 .sparc/
+.swarm/
+.hive-mind/
+.roo/
 .flow-log/
 *.flowstats.json
+claude-flow
+claude-flow.bat
+claude-flow.ps1
+
+# Claude Flow Generated Config/DB
+claude-flow.config.json
+claude-flow.local.json
+.claude/settings.local.json
+.mcp.json
+memory/claude-flow-data.json
+memory-bank.md
+coordination.md
+.flow-prompt.txt
+hive-mind-prompt-*.txt
+
+# Memory & Coordination (keep READMEs)
+memory/sessions/*
+!memory/sessions/README.md
+memory/agents/*
+!memory/agents/README.md
+coordination/memory_bank/*
+coordination/subtasks/*
+coordination/orchestration/*
+
+# Databases
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+
+# Runtime temp
+tmp/
