@@ -77,6 +77,7 @@
 - [ ] Implement login endpoint
  - [x] Implement login endpoint (2025-08-29)
 - [ ] Implement logout endpoint
+- [x] Implement logout endpoint (stateless) (2025-08-29)
 - [ ] Add JWT token generation
 - [ ] Create auth guards
 - [x] Add auth tests (register) (2025-08-29)

@@ -31,6 +31,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login with email & password' })
   @ApiBody({ schema: { properties: { email: { type: 'string', example: 'user@example.com' }, password: { type: 'string', example: 'VeryStrongPassw0rd' } }, required: ['email','password'] } })
   @ApiResponse({ status: 200, description: 'Returns access & refresh tokens' })
@@ -48,6 +49,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Refresh JWT token pair' })
   @ApiBody({ schema: { properties: { refreshToken: { type: 'string' } }, required: ['refreshToken'] } })
   async refresh(@Body() body: unknown) {
@@ -70,5 +72,16 @@ export class AuthController {
   me(@Req() req: any) {
     const u = req.user;
     return { sub: u.sub, email: u.email };
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Logout (stateless): client discards tokens' })
+  @ApiResponse({ status: 204, description: 'Logged out (stateless)' })
+  async logout() {
+    // Stateless JWT: nothing to revoke on server right now
+    return;
   }
 }

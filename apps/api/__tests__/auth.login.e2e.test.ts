@@ -38,6 +38,6 @@ describeIf('Auth Login (e2e with DB)', () => {
     const access = login.body.accessToken as string;
     expect(access).toBeTruthy();
     await request(app.getHttpServer()).get('/auth/me').set('Authorization', `Bearer ${access}`).expect(200);
+    await request(app.getHttpServer()).post('/auth/logout').set('Authorization', `Bearer ${access}`).expect(204);
   });
 });
-
