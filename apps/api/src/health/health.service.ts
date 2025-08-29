@@ -6,7 +6,7 @@ export class HealthService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getStatus() {
-    const db = await this.checkDb(300);
+    const db = await this.checkDb(1500);
     return {
       status: 'ok' as const,
       timestamp: new Date().toISOString(),

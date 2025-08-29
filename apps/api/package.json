@@ -6,7 +6,7 @@
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "pnpm -w prisma:generate && tsc -p tsconfig.json",
     "start": "node dist/src/main.js"
   },
   "devDependencies": {
