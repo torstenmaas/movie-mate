@@ -40,13 +40,35 @@ jobs:
         run: pnpm install --frozen-lockfile=false
 
       - name: Test with coverage
-        run: pnpm test -- --coverage
+        run: pnpm test -- --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
           path: coverage/lcov.info
+        if: always()
+
+      - name: Coverage Gate (non-blocking)
+        id: cov
+        run: |
+          MIN=70
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "coverage-summary.json not found" >&2
+            exit 0
+          fi
+          PCT=$(jq -r '.total.lines.pct' coverage/coverage-summary.json)
+          echo "lines_coverage=$PCT" >> $GITHUB_OUTPUT
+          if [ "$(printf '%.0f' "$PCT")" -lt "$MIN" ]; then
+            echo "Coverage below threshold ($PCT% < ${MIN}%)" >&2
+          fi
+        continue-on-error: true
+
+      - name: Upload coverage summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-summary
+          path: coverage/coverage-summary.json
         if: always()
 
   security:
