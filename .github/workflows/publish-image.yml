@@ -1,0 +1,65 @@
+name: Publish Docker Image (GHCR)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Optional additional tag (e.g. v0.1.0)"
+        required: false
+  push:
+    tags:
+      - "v*"
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare image coordinates
+        id: prep
+        run: |
+          IMAGE_ID=$(echo "${REGISTRY}/${GITHUB_REPOSITORY}" | tr '[:upper:]' '[:lower:]')
+          SHA_TAG=${GITHUB_SHA::7}
+          echo "image=${IMAGE_ID}" >> $GITHUB_OUTPUT
+          echo "sha_tag=${SHA_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build image
+        run: |
+          docker build -t ${{ steps.prep.outputs.image }}:${{ steps.prep.outputs.sha_tag }} -f Dockerfile .
+
+      - name: Add branch/tag aliases
+        run: |
+          IMAGE=${{ steps.prep.outputs.image }}
+          SHA=${{ steps.prep.outputs.sha_tag }}
+          # main alias when building from main
+          if [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
+            docker tag "$IMAGE:$SHA" "$IMAGE:main"
+          fi
+          # input tag alias
+          if [[ -n "${{ github.event.inputs.tag }}" ]]; then
+            docker tag "$IMAGE:$SHA" "$IMAGE:${{ github.event.inputs.tag }}"
+          fi
+
+      - name: Push image(s)
+        run: |
+          IMAGE=${{ steps.prep.outputs.image }}
+          SHA=${{ steps.prep.outputs.sha_tag }}
+          docker push "$IMAGE:$SHA"
+          if docker image inspect "$IMAGE:main" > /dev/null 2>&1; then docker push "$IMAGE:main"; fi
+          if [[ -n "${{ github.event.inputs.tag }}" ]]; then docker push "$IMAGE:${{ github.event.inputs.tag }}"; fi
+
