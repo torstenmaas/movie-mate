@@ -25,6 +25,7 @@ model User {
   sessions         Session[]
   emailVerifications EmailVerification[]
   passwordResets   PasswordReset[]
+  refreshTokens    RefreshToken[]
 
   @@map("users")
 }

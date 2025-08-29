@@ -156,6 +156,20 @@ exports.Prisma.PasswordResetScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RefreshTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  jti: 'jti',
+  familyId: 'familyId',
+  hashedToken: 'hashedToken',
+  userAgent: 'userAgent',
+  ip: 'ip',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  replacedById: 'replacedById',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -186,7 +200,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   EmailVerification: 'EmailVerification',
-  PasswordReset: 'PasswordReset'
+  PasswordReset: 'PasswordReset',
+  RefreshToken: 'RefreshToken'
 };
 
 /**

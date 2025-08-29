@@ -2,8 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../client"
+  provider      = "prisma-client-js"
+  output        = "../client"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -24,6 +25,7 @@ model User {
   sessions           Session[]
   emailVerifications EmailVerification[]
   passwordResets     PasswordReset[]
+  refreshTokens      RefreshToken[]
 
   @@map("users")
 }
@@ -68,4 +70,25 @@ model PasswordReset {
   @@index([userId])
   @@index([token])
   @@map("password_resets")
+}
+
+model RefreshToken {
+  id           String    @id @default(uuid())
+  userId       String
+  jti          String    @unique
+  familyId     String
+  hashedToken  String
+  userAgent    String?
+  ip           String?
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?
+  createdAt    DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
 }

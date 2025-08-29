@@ -1,21 +1,20 @@
 -- CreateTable
 CREATE TABLE IF NOT EXISTS "refresh_tokens" (
     "id" TEXT PRIMARY KEY,
-    "user_id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "jti" TEXT NOT NULL UNIQUE,
-    "family_id" TEXT NOT NULL,
-    "hashed_token" TEXT NOT NULL,
-    "user_agent" TEXT,
+    "familyId" TEXT NOT NULL,
+    "hashedToken" TEXT NOT NULL,
+    "userAgent" TEXT,
     "ip" TEXT,
-    "expires_at" TIMESTAMP NOT NULL,
-    "revoked_at" TIMESTAMP,
-    "replaced_by_id" TEXT,
-    "created_at" TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT "refresh_tokens_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+    "expiresAt" TIMESTAMP NOT NULL,
+    "revokedAt" TIMESTAMP,
+    "replacedById" TEXT,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
+    CONSTRAINT "refresh_tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 -- Indexes
-CREATE INDEX IF NOT EXISTS "refresh_tokens_user_id_idx" ON "refresh_tokens" ("user_id");
-CREATE INDEX IF NOT EXISTS "refresh_tokens_family_id_idx" ON "refresh_tokens" ("family_id");
-CREATE INDEX IF NOT EXISTS "refresh_tokens_expires_at_idx" ON "refresh_tokens" ("expires_at");
-
+CREATE INDEX IF NOT EXISTS "refresh_tokens_userId_idx" ON "refresh_tokens" ("userId");
+CREATE INDEX IF NOT EXISTS "refresh_tokens_familyId_idx" ON "refresh_tokens" ("familyId");
+CREATE INDEX IF NOT EXISTS "refresh_tokens_expiresAt_idx" ON "refresh_tokens" ("expiresAt");
