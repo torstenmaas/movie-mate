@@ -33,6 +33,14 @@
 - Refresh invalid/rotated → `AUTH_REFRESH_REVOKED` (401)
 - CSRF failed → `GEN_FORBIDDEN` (403)
 
+## Errors & Tracing
+
+- Standardized error shape returned by a global filter:
+  - Fields: `statusCode`, `error` (from docs/error-codes.md), `message`, optional `details`, and `traceId`.
+  - The same `traceId` is also sent as `x-trace-id` response header. Incoming `x-trace-id`/`x-request-id` is reused if present.
+- Swagger documents error responses for auth endpoints and lists possible codes via `x-error-codes`.
+- Default mappings by status: 401 → `GEN_UNAUTHORIZED`, 403 → `GEN_FORBIDDEN`, 404 → `GEN_NOT_FOUND`, 409 → `GEN_CONFLICT`, 422 → `GEN_VALIDATION_FAILED`, 429 → `GEN_RATE_LIMITED`, 500 → `GEN_INTERNAL`.
+
 ## ENV (excerpt)
 
 - JWT_SECRET, JWT_EXPIRES_IN
@@ -50,3 +58,4 @@
 - Testcontainers benötigt Docker im CI Runner. Alternativ E2E in einer Stufe mit `services: postgres` laufen lassen und die Tests gegen diese DB richten.
 - Für reine Unit-Pipelines genügt `pnpm test` (keine Container nötig).
 - Prisma Migrations in CI/Prod: `pnpm prisma:migrate:deploy` (nicht `migrate:dev`).
+- Docker-Build + Smoke: Workflow baut das Image und pingt `/health/ready` bis es 200 liefert.
