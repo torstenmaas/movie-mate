@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Optional additional tag (e.g. v0.1.0)"
+        description: 'Optional additional tag (e.g. v0.1.0)'
         required: false
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 env:
   REGISTRY: ghcr.io
@@ -62,4 +62,3 @@ jobs:
           docker push "$IMAGE:$SHA"
           if docker image inspect "$IMAGE:main" > /dev/null 2>&1; then docker push "$IMAGE:main"; fi
           if [[ -n "${{ github.event.inputs.tag }}" ]]; then docker push "$IMAGE:${{ github.event.inputs.tag }}"; fi
-
