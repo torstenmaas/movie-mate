@@ -67,21 +67,20 @@
 
 ## Coolify Deployment
 
-- [ ] Install Coolify on Hetzner server
-- [ ] Configure domain and SSL
-- [ ] Create new project in Coolify
-- [ ] Connect GitHub repository
-- [ ] Configure environment variables
-- [ ] Setup PostgreSQL in Coolify
+- [x] Install Coolify on Hetzner server
+- [x] Configure domain and SSL
+- [x] Create new project in Coolify
+- [x] Connect GitHub repository
+- [x] Configure environment variables
+- [x] Setup PostgreSQL in Coolify
 - [ ] Setup Redis in Coolify
-- [ ] Deploy first version
-- [ ] Verify health endpoint live
+- [x] Deploy first version
+- [x] Verify health endpoint live
 - [ ] Setup monitoring
 
 ## Database Layer
 
 - [x] Initialize Prisma + seed scripts (2025-08-25)
-- [ ] Configure Drizzle with PostgreSQL (Note: Using Prisma instead)
 - [ ] Create database schema module
 - [x] Add migration scripts (2025-08-25)
 - [x] Create user entity with email/displayName (2025-08-25)
