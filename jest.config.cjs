@@ -18,6 +18,8 @@ module.exports = {
     'apps/api/src/.*/dto/.*.ts',
     'apps/api/src/.*.swagger.ts',
     'packages/@infra/prisma/client/.*',
+    'packages/@infra/prisma/seed.ts',
+    'packages/@shared/src/index.ts',
   ],
   coverageReporters: ['text', 'lcov', 'json-summary'],
   ...(useDb

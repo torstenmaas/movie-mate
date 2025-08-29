@@ -54,5 +54,30 @@ describe('SentryExceptionFilter', () => {
     expect(resp.code).toBe(500)
     expect(resp.payload).toHaveProperty('error', 'GEN_INTERNAL')
   })
-})
 
+  it.each([
+    [403, 'GEN_FORBIDDEN'],
+    [404, 'GEN_NOT_FOUND'],
+    [409, 'GEN_CONFLICT'],
+    [429, 'GEN_RATE_LIMITED'],
+  ])('maps %s to %s by default', (status, code) => {
+    const filter = new SentryExceptionFilter()
+    const { host, resp } = createHost()
+    // Empty object to force defaultMessage/defaultCode path
+    const HttpException = require('@nestjs/common').HttpException
+    filter.catch(new HttpException({}, status), host)
+    expect(resp.code).toBe(status)
+    expect(resp.payload).toHaveProperty('error', code)
+  })
+
+  it('uses header x-trace-id if req.traceId missing', () => {
+    const filter = new SentryExceptionFilter()
+    const resp: any = { status: (c: number) => resp, json: (b: any) => (resp.payload = b), setHeader: jest.fn() }
+    const req: any = { headers: { 'x-trace-id': 'hdr-123' } }
+    const host = {
+      switchToHttp: () => ({ getResponse: () => resp, getRequest: () => req }),
+    } as unknown as ArgumentsHost
+    filter.catch(new Error('x'), host)
+    expect(resp.payload).toHaveProperty('traceId', 'hdr-123')
+  })
+})
