@@ -26,6 +26,7 @@
 ## Tech Stack Decisions
 
 ### Backend (apps/api)
+
 - **Framework**: NestJS - Enterprise structure, built-in WebSockets
 - **Language**: TypeScript - Type safety, better DX
 - **Database**: PostgreSQL (Coolify hosted) - Relational data, ACID
@@ -38,6 +39,7 @@
 - **Email**: React Email + Resend - Modern email stack
 
 ### Infrastructure
+
 - **Hosting**: Hetzner Cloud (€5/month)
 - **Deployment**: Coolify (self-hosted PaaS)
 - **Database**: PostgreSQL in Coolify (Prod), Docker locally (Dev)
@@ -46,6 +48,7 @@
 - **SSL**: Let's Encrypt via Coolify
 
 ### Frontend (Later)
+
 - **Framework**: Vite + React 18 (stable)
 - **UI**: Mantine v7 (latest stable)
 - **Routing**: TanStack Router - Type-safe routing
@@ -99,27 +102,32 @@
 ## Critical Flows
 
 ### 1. Health Check
+
 ```
 GET /health → { status: 'ok', timestamp, version }
 ```
 
 ### 2. User Registration (Phase 2)
+
 ```
 POST /auth/register → Validate → Hash Password → Create User → Create Session → Return Token
 ```
 
 ### 3. WebSocket Connection (Phase 3)
+
 ```
 WS /notifications → Authenticate → Subscribe to User Channel → Emit Events
 ```
 
 ## Performance Requirements
+
 - API Response: < 200ms (p95)
 - WebSocket Latency: < 100ms
 - Database Queries: < 50ms
 - Uptime: 99.9% (43 min/month downtime)
 
 ## Security Requirements
+
 - Passwords: Argon2id hashing
 - Sessions: 30 day expiry, secure cookies
 - Rate Limiting: 100 req/min per IP
@@ -175,12 +183,14 @@ FRONTEND_URL=https://moviemate.app
 ```
 
 ## Open Questions
+
 - [ ] CDN for static assets?
 - [ ] Backup strategy for PostgreSQL?
 - [ ] Rate limiting service or in-app?
 - [ ] Monitoring service (Sentry, etc.)?
 
 ## Decisions Log
+
 - 2025-08-25: Chose NestJS over Express for structure
 - 2025-08-25: Passport over Lucia for NestJS integration
 - 2025-08-25: No Redis initially - PostgreSQL for sessions

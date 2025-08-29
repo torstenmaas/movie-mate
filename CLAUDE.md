@@ -1,8 +1,10 @@
 > # SPARC-Kompatibilität (Claude-Flow)
+>
 > **Nur für Agent-Ausführung – ergänzt die Regeln unten, ohne sie zu ersetzen.**
-> - **Golden Rule:** *1 Message = alle zusammengehörigen Operationen.* Dateizugriffe, Bash-Befehle, Todos in **einem** Schritt bündeln.
+>
+> - **Golden Rule:** _1 Message = alle zusammengehörigen Operationen._ Dateizugriffe, Bash-Befehle, Todos in **einem** Schritt bündeln.
 > - **Nie ins Repo-Root schreiben.** Verwende unser Monorepo-Mapping:
-    >   - Code: `apps/<app>/src`, `packages/<scope>/<pkg>/src`
+>   - Code: `apps/<app>/src`, `packages/<scope>/<pkg>/src`
 >   - Tests: `__tests__` neben `src`
 >   - Docs: `docs/`, Config: `config/`, Skripte: `scripts/`
 > - **Keine Secrets in Dateien.** Nur ENV/Secrets-Manager verwenden.
@@ -10,10 +12,11 @@
 > - **Vor jedem Schritt:** `PLANNING.md`, `TASKS.md` lesen; **nur ungebockte** Tasks anfassen.
 >
 > Diese Regeln sind **additiv** zu den Projekt-Konventionen unten (Namensregeln, Reviews, A11y, Tests, Observability, Security, etc.).
->
+
 # CLAUDE.md - Claude Development Instructions
 
 ## Purpose
+
 Defines workflow, coding standards, and development conventions for the Movie Mate platform.
 
 ## Session Loop
@@ -51,6 +54,7 @@ Defines workflow, coding standards, and development conventions for the Movie Ma
 ## Coding Standards
 
 ### General Principles
+
 - **Incremental Changes**: Modify existing code rather than rewriting
 - **Test Coverage**: Minimum 80% for API endpoints
 - **Type Safety**: Strict TypeScript, no `any` types
@@ -58,6 +62,7 @@ Defines workflow, coding standards, and development conventions for the Movie Ma
 - **Logging**: Structured logs with correlation IDs
 
 ### NestJS API Standards
+
 ```typescript
 // File naming
 *.controller.ts    // Controllers
@@ -69,6 +74,7 @@ Defines workflow, coding standards, and development conventions for the Movie Ma
 ```
 
 ### Naming Conventions
+
 - **Variables/Functions**: camelCase
 - **Classes/Interfaces**: PascalCase
 - **Constants**: UPPER_SNAKE_CASE
@@ -76,6 +82,7 @@ Defines workflow, coding standards, and development conventions for the Movie Ma
 - **Database**: snake_case
 
 ### Git Commit Format
+
 ```
 type(scope): description
 
@@ -86,12 +93,14 @@ type(scope): description
 ```
 
 ### Testing Requirements
+
 - Unit tests for all services
 - Integration tests for all endpoints
 - E2E tests for critical flows
 - Mocks for external services (TMDB, etc.)
 
 ### Documentation
+
 - JSDoc for all public methods
 - README in each app directory
 - API endpoints documented with Swagger
@@ -106,12 +115,14 @@ type(scope): description
 5. **Merge**: Squash and merge to main
 
 ## Environment Management
+
 - `.env.example` always updated
 - Secrets in Hetzner/Coolify
 - Local dev uses `.env.local`
 - Never commit secrets
 
 ## Session Rules
+
 - Always acknowledge task before starting
 - Show incremental progress
 - Ask for clarification if requirements unclear
@@ -119,6 +130,7 @@ type(scope): description
 - Complete one task fully before moving to next
 
 ## Priority Order
+
 1. Blocking bugs
 2. Security issues
 3. Test failures
@@ -127,4 +139,5 @@ type(scope): description
 6. Documentation
 
 ---
+
 **Remember**: Read PLANNING.md at session start, check TASKS.md for next task, update progress immediately.

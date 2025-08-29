@@ -2,6 +2,7 @@
 
 **Format:** `DOMAIN_REASON` with stable HTTP status and developer-friendly messages.  
 **Response shape:**
+
 ```json
 {
   "error": "FRIEND_REQUEST_DUPLICATE",
@@ -11,7 +12,8 @@
 }
 ```
 
-## General (GEN_*)
+## General (GEN\_\*)
+
 - `GEN_UNAUTHORIZED` — 401 — Missing/invalid credentials.
 - `GEN_FORBIDDEN` — 403 — Lacking permissions/scope.
 - `GEN_NOT_FOUND` — 404 — Resource not found.
@@ -20,41 +22,48 @@
 - `GEN_VALIDATION_FAILED` — 422 — Input validation failed.
 - `GEN_IDEMPOTENCY_REPLAY` — 409 — Idempotency key replayed.
 
-## Auth (AUTH_*)
+## Auth (AUTH\_\*)
+
 - `AUTH_INVALID_CREDENTIALS` — 401 — Email/password incorrect.
 - `AUTH_TOKEN_EXPIRED` — 401 — Access token expired.
 - `AUTH_REFRESH_REVOKED` — 401 — Refresh token invalid/rotated.
 - `AUTH_SCOPE_MISSING` — 403 — Required scope missing.
 
-## Friendships (FRIEND_*)
+## Friendships (FRIEND\_\*)
+
 - `FRIEND_REQUEST_DUPLICATE` — 409 — Friendship already exists or pending.
 - `FRIEND_REQUEST_NOT_FOUND` — 404 — Invitation not found or expired.
 - `FRIEND_FORBIDDEN` — 403 — Not allowed to modify this friendship.
 - `FRIEND_BLOCKED` — 409 — User is blocked.
 
-## Watchlists (WATCHLIST_*)
+## Watchlists (WATCHLIST\_\*)
+
 - `WATCHLIST_ITEM_NOT_FOUND` — 404 — Item not found on watchlist.
 - `WATCHLIST_DUPLICATE_ITEM` — 409 — Title already present.
 - `WATCHLIST_FORBIDDEN` — 403 — Not allowed (visibility/private).
 
-## Suggestions (SUGGEST_*)
+## Suggestions (SUGGEST\_\*)
+
 - `SUGGEST_ALREADY_ACCEPTED` — 409 — Suggestion already accepted/closed.
 - `SUGGEST_TARGET_INVALID` — 422 — Invalid target users.
 - `SUGGEST_NOT_FOUND` — 404 — Suggestion not found.
 - `SUGGEST_FORBIDDEN` — 403 — Not allowed to view/modify.
 
-## Viewings (VIEW_*)
+## Viewings (VIEW\_\*)
+
 - `VIEW_DUPLICATE_ENTRY` — 409 — Duplicate viewing record.
 - `VIEW_INVALID_GROUP` — 422 — Group reference invalid.
 - `VIEW_FORBIDDEN` — 403 — Not allowed to record/view.
 
-## Notifications (NOTIF_*)
+## Notifications (NOTIF\_\*)
+
 - `NOTIF_NOT_FOUND` — 404 — Notification not found.
 - `NOTIF_ALREADY_ACKED` — 409 — Already acknowledged.
 
 ---
 
 ### Conventions
+
 - **Stability:** Codes are stable once released; deprecations listed in a table with replacement codes.
 - **Docs:** Each endpoint documents possible codes in OpenAPI via `x-error-codes` extension.
 - **Tracing:** Include `traceId` in error responses (from OTel context).

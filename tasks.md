@@ -75,7 +75,7 @@
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [ ] Implement login endpoint
- - [x] Implement login endpoint (2025-08-29)
+- [x] Implement login endpoint (2025-08-29)
 - [ ] Implement logout endpoint
 - [x] Implement logout endpoint (stateless) (2025-08-29)
 - [ ] Add JWT token generation
@@ -118,15 +118,18 @@
 ## Future Phases
 
 ### Frontend App
+
 - [ ] Initialize Vite + React app
 - [ ] Setup Mantine UI
 - [ ] Create auth pages
 - [ ] Connect to API
 
 ### Admin Panel
+
 - [ ] TBD after core platform
 
 ### B2C Panel
+
 - [ ] TBD after admin panel
 
 ---
@@ -144,6 +147,7 @@
 ---
 
 ## Notes
+
 - Focus on API first, get it production-ready
 - Frontend can be developed separately
 - Each task should be atomic and testable

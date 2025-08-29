@@ -15,12 +15,6 @@
     "sourceMap": true,
     "types": ["node", "jest"]
   },
-  "include": [
-    "seed.ts",
-    "__tests__/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["seed.ts", "__tests__/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

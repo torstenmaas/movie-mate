@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       label:
-        description: "Label für neue Issues"
-        default: "backlog"
+        description: 'Label für neue Issues'
+        default: 'backlog'
         required: false
       milestone:
-        description: "Milestone-Nummer (optional)"
+        description: 'Milestone-Nummer (optional)'
         required: false
 
 jobs:

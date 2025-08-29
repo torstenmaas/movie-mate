@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -12,21 +12,27 @@ const EnvSchema = z.object({
   JWT_EXPIRES_IN: z.string().optional().default('15m'),
   JWT_REFRESH_SECRET: z.string().min(10).optional().default('dev-refresh-secret-change-me'),
   JWT_REFRESH_EXPIRES_IN: z.string().optional().default('30d'),
-});
+  REFRESH_TOKEN_COOKIE: z.string().optional().default('false'),
+  REFRESH_COOKIE_NAME: z.string().optional().default('refreshToken'),
+  CSRF_COOKIE_NAME: z.string().optional().default('csrfToken'),
+  CSRF_HEADER_NAME: z.string().optional().default('x-csrf-token'),
+  COOKIE_SECURE: z.string().optional().default('false'),
+  COOKIE_DOMAIN: z.string().optional().default(''),
+})
 
 export type AppEnv = z.infer<typeof EnvSchema> & {
-  CORS_ORIGINS: string[];
-};
+  CORS_ORIGINS: string[]
+}
 
 export function validateEnv(raw: Record<string, unknown>) {
-  const parsed = EnvSchema.safeParse(raw);
+  const parsed = EnvSchema.safeParse(raw)
   if (!parsed.success) {
-    const issues = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ');
-    throw new Error(`Invalid environment configuration: ${issues}`);
+    const issues = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ')
+    throw new Error(`Invalid environment configuration: ${issues}`)
   }
   const cors = (parsed.data.CORS_ALLOWLIST || '')
     .split(',')
     .map((s) => s.trim())
-    .filter(Boolean);
-  return { ...parsed.data, CORS_ORIGINS: cors } satisfies AppEnv;
+    .filter(Boolean)
+  return { ...parsed.data, CORS_ORIGINS: cors } satisfies AppEnv
 }

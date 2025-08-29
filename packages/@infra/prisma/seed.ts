@@ -1,16 +1,18 @@
-import { PrismaClient } from './client';
-import { randomBytes } from 'crypto';
+import { PrismaClient } from './client'
+import { randomBytes } from 'crypto'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting seed...');
+  console.log('🌱 Starting seed...')
 
-  const isProd = process.env.NODE_ENV === 'production';
-  const allowDemo = process.env.SEED_DEMO === 'true';
+  const isProd = process.env.NODE_ENV === 'production'
+  const allowDemo = process.env.SEED_DEMO === 'true'
   if (isProd && !allowDemo) {
-    console.log('🔒 Production environment detected. Skipping demo seed (set SEED_DEMO=true to override).');
-    return;
+    console.log(
+      '🔒 Production environment detected. Skipping demo seed (set SEED_DEMO=true to override).',
+    )
+    return
   }
 
   // Create dummy user with preferredLocale='de'
@@ -24,9 +26,9 @@ async function main() {
       emailVerified: true,
       preferredLocale: 'de',
     },
-  });
+  })
 
-  console.log(`✅ Created dummy user: ${dummyUser.email} (locale: ${dummyUser.preferredLocale})`);
+  console.log(`✅ Created dummy user: ${dummyUser.email} (locale: ${dummyUser.preferredLocale})`)
 
   // Create a session for the user
   const session = await prisma.session.create({
@@ -38,18 +40,18 @@ async function main() {
         ip: '127.0.0.1',
       },
     },
-  });
+  })
 
-  console.log(`✅ Created session for user: ${session.id}`);
+  console.log(`✅ Created session for user: ${session.id}`)
 
-  console.log('🌱 Seed completed successfully!');
+  console.log('🌱 Seed completed successfully!')
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
-    process.exit(1);
+    console.error('❌ Seed failed:', e)
+    process.exit(1)
   })
   .finally(async () => {
-    await prisma.$disconnect();
-  });
+    await prisma.$disconnect()
+  })
