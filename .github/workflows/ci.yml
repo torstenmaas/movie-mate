@@ -50,8 +50,17 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Test
-        run: pnpm test
+      - name: Test with coverage
+        run: pnpm test -- --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary
+
+      - name: Upload coverage artifacts (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-ci
+          path: |
+            coverage/lcov.info
+            coverage/coverage-summary.json
+        if: always()
 
   e2e-db:
     name: E2E (DB, Testcontainers)
