@@ -39,14 +39,21 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile=false
 
-      - name: Test with coverage
-        run: pnpm test -- --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary
+      - name: Test with coverage (incl. HTML)
+        run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --coverageReporters=html
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-lcov
           path: coverage/lcov.info
+        if: always()
+
+      - name: Upload HTML coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage/lcov-report
         if: always()
 
       - name: Coverage Gate (non-blocking)

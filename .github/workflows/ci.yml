@@ -51,13 +51,20 @@ jobs:
         run: pnpm typecheck
 
       - name: Test with coverage
-        run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --runInBand
+        run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --coverageReporters=html --runInBand
 
       - name: Show coverage folder (debug)
         if: always()
         run: |
           ls -la || true
           ls -la coverage || true
+
+      - name: Upload HTML coverage (CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html-ci
+          path: coverage/lcov-report
+        if: always()
 
       - name: Upload coverage artifacts (CI)
         uses: actions/upload-artifact@v4
