@@ -2,7 +2,7 @@
   "name": "@apps/api",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
   "scripts": {
