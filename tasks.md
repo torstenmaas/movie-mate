@@ -17,10 +17,10 @@
 - [x] Create health check module (2025-08-28)
 - [x] Implement GET /health endpoint (2025-08-28)
 - [x] Add health check tests (unit) (2025-08-28)
-- [ ] Setup Swagger documentation
-- [ ] Configure CORS properly
-- [ ] Add request logging middleware
-- [ ] Setup config module for env vars
+- [x] Setup Swagger documentation (flagged via ENABLE_SWAGGER) (2025-08-29)
+- [x] Configure CORS properly (allowlist from env) (2025-08-29)
+- [x] Add request logging middleware (nestjs-pino) (2025-08-29)
+- [x] Setup config module for env vars (2025-08-28)
 
 ## Testing Setup
 

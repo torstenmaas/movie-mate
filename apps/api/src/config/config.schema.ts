@@ -5,6 +5,9 @@ const EnvSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
   APP_NAME: z.string().default('movie-mate'),
   CORS_ALLOWLIST: z.string().optional().default(''),
+  ENABLE_SWAGGER: z.string().optional().default('false'),
+  LOG_LEVEL: z.string().optional().default('info'),
+  SENTRY_DSN: z.string().optional().default(''),
 });
 
 export type AppEnv = z.infer<typeof EnvSchema> & {
@@ -23,4 +26,3 @@ export function validateEnv(raw: Record<string, unknown>) {
     .filter(Boolean);
   return { ...parsed.data, CORS_ORIGINS: cors } satisfies AppEnv;
 }
-

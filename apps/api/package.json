@@ -16,6 +16,10 @@
   },
   "dependencies": {
     "@infra/prisma": "workspace:*",
+    "@nestjs/swagger": "^7.4.2",
+    "swagger-ui-express": "^5.0.1",
+    "nestjs-pino": "^4.1.0",
+    "@sentry/node": "^8.30.0",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",

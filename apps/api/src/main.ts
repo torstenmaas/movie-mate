@@ -2,7 +2,8 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as Sentry from '@sentry/node';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,8 +24,21 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Logging
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  // Swagger (optional)
+  const enableSwagger = (config.get<string>('ENABLE_SWAGGER', 'false') === 'true');
+  if (enableSwagger) {
+    const doc = new DocumentBuilder().setTitle('Movie Mate API').setVersion('0.1.0').build();
+    const document = SwaggerModule.createDocument(app, doc);
+    SwaggerModule.setup('/docs', app, document);
+  }
+
+  // Sentry (minimal init)
+  const dsn = config.get<string>('SENTRY_DSN', '');
+  if (dsn) {
+    Sentry.init({ dsn, environment: config.get('NODE_ENV') });
+    process.on('uncaughtException', (e) => { try { Sentry.captureException(e); } catch {} });
+    process.on('unhandledRejection', (e) => { try { Sentry.captureException(e); } catch {} });
+  }
 
   await app.listen(port);
 }
