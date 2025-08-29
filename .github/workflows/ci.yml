@@ -118,3 +118,29 @@ jobs:
       - name: Stop container
         if: always()
         run: docker stop mm-test || true
+
+      - name: Run readiness smoke test with Postgres
+        run: |
+          # Create network and start Postgres
+          docker network create mm-net || true
+          docker run -d --rm --name mm-db --network mm-net \
+            -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=app postgres:16-alpine
+          # Start API with DATABASE_URL pointing to mm-db
+          docker run -d --rm --network mm-net -p 3000:3000 --name mm-test \
+            -e DATABASE_URL=postgresql://postgres:postgres@mm-db:5432/app \
+            movie-mate:test
+          # Wait for readiness
+          for i in {1..60}; do \
+            curl -fsS http://127.0.0.1:3000/health/ready && exit 0 || sleep 1; \
+          done; \
+          echo "Service did not become ready"; \
+          docker logs mm-test || true; \
+          docker logs mm-db || true; \
+          exit 1
+
+      - name: Stop containers (readiness)
+        if: always()
+        run: |
+          docker stop mm-test || true
+          docker stop mm-db || true
+          docker network rm mm-net || true
