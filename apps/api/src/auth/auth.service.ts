@@ -1,7 +1,6 @@
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import type { RegisterInput } from './dto/register.dto'
-import * as argon2 from 'argon2'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { randomUUID, createHash } from 'crypto'
@@ -15,13 +14,14 @@ export class AuthService {
   ) {}
 
   async register(input: RegisterInput) {
+    const argon2 = await import('argon2')
     const email = input.email
     const existing = await this.prisma.user.findUnique({ where: { email } })
     if (existing) {
       throw new ConflictException({ error: 'GEN_CONFLICT', message: 'Email already registered.' })
     }
 
-    const hashedPassword = await argon2.hash(input.password, { type: argon2.argon2id })
+    const hashedPassword = await argon2.hash(input.password, { type: (argon2 as any).argon2id })
     const user = await this.prisma.user.create({
       data: {
         email,
@@ -43,6 +43,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string, meta?: { userAgent?: string; ip?: string }) {
+    const argon2 = await import('argon2')
     const user = await this.prisma.user.findUnique({ where: { email: email.toLowerCase() } })
     if (!user)
       throw new UnauthorizedException({
