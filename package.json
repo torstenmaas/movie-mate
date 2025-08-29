@@ -13,7 +13,7 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "test": "jest --passWithNoTests",
-    "test:db": "RUN_DB_TESTS=true jest --passWithNoTests",
+    "test:db": "RUN_DB_TESTS=true jest --passWithNoTests --detectOpenHandles",
     "prepare": "husky install || true",
     "prisma:generate": "pnpm exec prisma generate --schema packages/@infra/prisma/prisma/schema.prisma",
     "prisma:migrate:dev": "dotenv -e .env -- pnpm exec prisma migrate dev --schema packages/@infra/prisma/prisma/schema.prisma",
