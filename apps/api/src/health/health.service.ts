@@ -11,6 +11,7 @@ export class HealthService {
       status: 'ok' as const,
       timestamp: new Date().toISOString(),
       version: process.env.APP_NAME ? `${process.env.APP_NAME}@${process.env.NODE_ENV ?? 'dev'}` : 'movie-mate',
+      commit: process.env.SOURCE_COMMIT ? String(process.env.SOURCE_COMMIT).slice(0, 7) : undefined,
       db,
     };
   }
