@@ -33,6 +33,11 @@ module.exports = async () => {
       stdio: 'inherit',
       env: { ...process.env, DATABASE_URL: uri },
     });
+    // Ensure generated client matches current schema (needed for new models)
+    execSync('pnpm -s prisma:generate', {
+      stdio: 'inherit',
+      env: { ...process.env },
+    });
   } catch (e) {
     // Stop the container if migrations fail
     try { await container.stop(); } catch (_) {}
@@ -41,4 +46,3 @@ module.exports = async () => {
 
   // Keep container alive; Jest teardown will stop it by id (best-effort)
 };
-
