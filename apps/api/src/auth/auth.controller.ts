@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Req } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+  Req,
+  UnprocessableEntityException,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { RegisterSchema } from './dto/register.dto'
@@ -36,14 +46,12 @@ export class AuthController {
   })
   async register(@Body() body: unknown) {
     const parsed = await RegisterSchema.safeParseAsync(body)
-    if (!parsed.success) {
-      return {
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    if (!parsed.success)
+      throw new UnprocessableEntityException({
         error: 'GEN_VALIDATION_FAILED',
         message: 'Invalid input',
         details: parsed.error.flatten(),
-      }
-    }
+      })
     return this.auth.register(parsed.data)
   }
 
@@ -59,14 +67,12 @@ export class AuthController {
   })
   async login(@Body() body: unknown, @Req() req: any) {
     const parsed = await LoginSchema.safeParseAsync(body)
-    if (!parsed.success) {
-      return {
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    if (!parsed.success)
+      throw new UnprocessableEntityException({
         error: 'GEN_VALIDATION_FAILED',
         message: 'Invalid input',
         details: parsed.error.flatten(),
-      }
-    }
+      })
     return this.auth.login(parsed.data.email, parsed.data.password, {
       userAgent: req.headers['user-agent'],
       ip: req.ip,
@@ -84,14 +90,12 @@ export class AuthController {
   })
   async refresh(@Body() body: unknown, @Req() req: any) {
     const parsed = await RefreshSchema.safeParseAsync(body)
-    if (!parsed.success) {
-      return {
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    if (!parsed.success)
+      throw new UnprocessableEntityException({
         error: 'GEN_VALIDATION_FAILED',
         message: 'Invalid input',
         details: parsed.error.flatten(),
-      }
-    }
+      })
     return this.auth.refresh(parsed.data.refreshToken, {
       userAgent: req.headers['user-agent'],
       ip: req.ip,

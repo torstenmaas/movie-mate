@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import * as Sentry from '@sentry/node'
 import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
+import { randomUUID } from 'crypto'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -38,6 +39,17 @@ async function bootstrap() {
     SwaggerModule.setup('/docs', app, document)
   }
 
+  // Attach a simple traceId to each request and response
+  app.use((req: any, res: any, next: any) => {
+    const headerId = (req.headers['x-trace-id'] || req.headers['x-request-id']) as
+      | string
+      | undefined
+    const traceId = headerId || randomUUID()
+    req.traceId = traceId
+    res.setHeader('x-trace-id', traceId)
+    next()
+  })
+
   // Cookies for refresh flow (optional)
   if (config.get<string>('REFRESH_TOKEN_COOKIE') === 'true') {
     app.use(cookieParser())
@@ -57,8 +69,10 @@ async function bootstrap() {
         Sentry.captureException(e)
       } catch {}
     })
-    app.useGlobalFilters(new SentryExceptionFilter())
   }
+
+  // Global error filter (includes Sentry capture when initialized)
+  app.useGlobalFilters(new SentryExceptionFilter())
 
   await app.listen(port)
 }

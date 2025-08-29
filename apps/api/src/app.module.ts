@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common'
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
+import { APP_FILTER } from '@nestjs/core'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { LoggerModule } from 'nestjs-pino'
 import { HealthController } from './health/health.controller'
@@ -9,6 +10,8 @@ import { AuthService } from './auth/auth.service'
 import { JwtModule } from '@nestjs/jwt'
 import { RateLimitGuard } from './common/guards/rate-limit.guard'
 import { validateEnv } from './config/config.schema'
+import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
+import { traceIdMiddleware } from './common/middlewares/traceid.middleware'
 
 @Module({
   imports: [
@@ -34,6 +37,16 @@ import { validateEnv } from './config/config.schema'
     JwtModule.register({}),
   ],
   controllers: [HealthController, AuthController],
-  providers: [HealthService, PrismaService, AuthService, RateLimitGuard],
+  providers: [
+    HealthService,
+    PrismaService,
+    AuthService,
+    RateLimitGuard,
+    { provide: APP_FILTER, useClass: SentryExceptionFilter },
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(traceIdMiddleware).forRoutes('*')
+  }
+}

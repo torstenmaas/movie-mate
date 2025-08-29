@@ -30,7 +30,7 @@
 - **Framework**: NestJS - Enterprise structure, built-in WebSockets
 - **Language**: TypeScript - Type safety, better DX
 - **Database**: PostgreSQL (Coolify hosted) - Relational data, ACID
-- **ORM**: Drizzle - Type-safe, performant
+- **ORM**: Prisma - Type-safe, mature ORM with migrations & seeding
 - **Auth**: Passport - Battle-tested with NestJS integration
 - **Cache**: None initially - Add Redis when needed
 - **Validation**: Zod - Universal validation (Backend + Frontend)

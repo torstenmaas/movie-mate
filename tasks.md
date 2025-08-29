@@ -27,7 +27,7 @@
 - [x] Configure Jest for NestJS (2025-08-28)
 - [x] Create test database setup (Testcontainers) (2025-08-28)
 - [x] Add Supertest for e2e tests (library added) (2025-08-28)
-- [ ] Create first integration test for /health
+- [x] Create first integration test for /health (2025-08-29)
 - [x] Setup test coverage reporting (2025-08-28)
 - [ ] Add pre-commit hooks for tests
 
@@ -39,7 +39,7 @@
 - [x] Add E2E (DB, Testcontainers) job (2025-08-29)
 - [ ] Add build job to workflow
 - [ ] Setup Docker build in CI
-- [ ] Configure Dockerfile for NestJS
+- [x] Configure Dockerfile for NestJS (2025-08-29)
 - [x] Add Docker compose for local dev (2025-08-28)
 - [ ] Setup webhook for Coolify
 
@@ -76,7 +76,7 @@
 - [x] Create email verification entity (2025-08-25)
 - [x] Create password reset entity (2025-08-25)
 - [ ] Setup migration CI/CD
-- [ ] Add database health check
+- [x] Add database health check (2025-08-29)
 
 ## Authentication Module
 
@@ -84,11 +84,10 @@
 - [ ] Install passport-local strategy
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
-- [ ] Implement login endpoint
 - [x] Implement login endpoint (2025-08-29)
 - [x] Implement logout endpoint (stateless + family revoke) (2025-08-29)
-- [ ] Add JWT token generation
-- [ ] Create auth guards
+- [x] Add JWT token generation (2025-08-29)
+- [x] Create auth guards (2025-08-29)
 - [x] Add auth tests (register) (2025-08-29)
 - [x] Add auth tests (login unit + e2e, refresh rotation/reuse, cookie mode) (2025-08-29)
 - [ ] Document auth endpoints
