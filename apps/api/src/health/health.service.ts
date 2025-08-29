@@ -17,14 +17,22 @@ export class HealthService {
   }
 
   private async checkDb(timeoutMs: number): Promise<'ok' | 'down'> {
+    let timer: NodeJS.Timeout | undefined;
     try {
       await Promise.race([
         this.prisma.$queryRaw`SELECT 1` as unknown as Promise<unknown>,
-        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), timeoutMs)),
+        new Promise((_, rej) => {
+          timer = setTimeout(() => rej(new Error('timeout')), timeoutMs);
+          // do not keep the event loop open because of this timer
+          // @ts-ignore Node types allow unref in runtime environments that support it
+          if (typeof (timer as any)?.unref === 'function') (timer as any).unref();
+        }),
       ]);
       return 'ok';
     } catch {
       return 'down';
+    } finally {
+      if (timer) clearTimeout(timer);
     }
   }
 }

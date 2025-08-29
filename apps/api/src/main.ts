@@ -28,7 +28,11 @@ async function bootstrap() {
   // Swagger (optional)
   const enableSwagger = (config.get<string>('ENABLE_SWAGGER', 'false') === 'true');
   if (enableSwagger) {
-    const doc = new DocumentBuilder().setTitle('Movie Mate API').setVersion('0.1.0').build();
+    const doc = new DocumentBuilder()
+      .setTitle('Movie Mate API')
+      .setVersion('0.1.0')
+      .addBearerAuth()
+      .build();
     const document = SwaggerModule.createDocument(app, doc);
     SwaggerModule.setup('/docs', app, document);
   }

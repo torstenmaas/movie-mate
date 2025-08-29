@@ -1,6 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { AuthService } from '../src/auth/auth.service';
 import { PrismaService } from '../src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 describe('AuthService.register', () => {
   it('creates a new user when email is free', async () => {
@@ -12,7 +14,14 @@ describe('AuthService.register', () => {
     } as unknown as PrismaService;
 
     const module = await Test.createTestingModule({
-      providers: [AuthService, { provide: PrismaService, useValue: prismaMock }],
+      providers: [
+        AuthService,
+        { provide: PrismaService, useValue: prismaMock },
+        JwtService,
+        { provide: ConfigService, useValue: { get: (k: string, d?: any) => ({
+          JWT_SECRET: 'secret', JWT_EXPIRES_IN: '15m', JWT_REFRESH_SECRET: 'rsecret', JWT_REFRESH_EXPIRES_IN: '30d'
+        } as any)[k] ?? d } as unknown as ConfigService },
+      ],
     }).compile();
 
     const service = module.get(AuthService);
@@ -30,7 +39,14 @@ describe('AuthService.register', () => {
     } as unknown as PrismaService;
 
     const module = await Test.createTestingModule({
-      providers: [AuthService, { provide: PrismaService, useValue: prismaMock }],
+      providers: [
+        AuthService,
+        { provide: PrismaService, useValue: prismaMock },
+        JwtService,
+        { provide: ConfigService, useValue: { get: (k: string, d?: any) => ({
+          JWT_SECRET: 'secret', JWT_EXPIRES_IN: '15m', JWT_REFRESH_SECRET: 'rsecret', JWT_REFRESH_EXPIRES_IN: '30d'
+        } as any)[k] ?? d } as unknown as ConfigService },
+      ],
     }).compile();
 
     const service = module.get(AuthService);
@@ -39,4 +55,3 @@ describe('AuthService.register', () => {
     ).rejects.toBeTruthy();
   });
 });
-

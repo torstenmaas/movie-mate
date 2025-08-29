@@ -75,10 +75,12 @@
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [ ] Implement login endpoint
+ - [x] Implement login endpoint (2025-08-29)
 - [ ] Implement logout endpoint
 - [ ] Add JWT token generation
 - [ ] Create auth guards
 - [x] Add auth tests (register) (2025-08-29)
+- [x] Add auth tests (login unit + e2e) (2025-08-29)
 - [ ] Document auth endpoints
 
 ## Email Module

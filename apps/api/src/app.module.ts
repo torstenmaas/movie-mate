@@ -6,6 +6,7 @@ import { HealthService } from './health/health.service';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { JwtModule } from '@nestjs/jwt';
 import { validateEnv } from './config/config.schema';
 
 @Module({
@@ -28,6 +29,7 @@ import { validateEnv } from './config/config.schema';
         } as any;
       },
     }),
+    JwtModule.register({}),
   ],
   controllers: [HealthController, AuthController],
   providers: [HealthService, PrismaService, AuthService],
