@@ -12,4 +12,7 @@ export class ErrorDto {
 
   @ApiProperty({ required: false, nullable: true })
   details?: unknown
+
+  @ApiProperty({ example: 'c1d2e3f4-5678-90ab-cdef-1234567890ab' })
+  traceId?: string
 }

@@ -20,6 +20,7 @@
 - `GEN_RATE_LIMITED` — 429 — Too many requests.
 - `GEN_CONFLICT` — 409 — State conflict.
 - `GEN_VALIDATION_FAILED` — 422 — Input validation failed.
+- `GEN_INTERNAL` — 500 — Unexpected server error.
 - `GEN_IDEMPOTENCY_REPLAY` — 409 — Idempotency key replayed.
 
 ## Auth (AUTH\_\*)
@@ -66,5 +67,5 @@
 
 - **Stability:** Codes are stable once released; deprecations listed in a table with replacement codes.
 - **Docs:** Each endpoint documents possible codes in OpenAPI via `x-error-codes` extension.
-- **Tracing:** Include `traceId` in error responses (from OTel context).
+- **Tracing:** Error responses include a `traceId`; the same value is sent as an `x-trace-id` header for correlation.
 - **Localization:** `message` is developer-facing English; client UIs localize by code.
