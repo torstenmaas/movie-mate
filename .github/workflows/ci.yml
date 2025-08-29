@@ -51,7 +51,13 @@ jobs:
         run: pnpm typecheck
 
       - name: Test with coverage
-        run: pnpm test -- --coverage --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary
+        run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --runInBand
+
+      - name: Show coverage folder (debug)
+        if: always()
+        run: |
+          ls -la || true
+          ls -la coverage || true
 
       - name: Upload coverage artifacts (CI)
         uses: actions/upload-artifact@v4
