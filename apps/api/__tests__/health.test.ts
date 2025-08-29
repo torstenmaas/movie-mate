@@ -10,7 +10,7 @@ describe('Health (unit)', () => {
     }).compile();
 
     const controller = moduleRef.get(HealthController);
-    const res = controller.get();
+    const res = await controller.get();
     expect(res).toHaveProperty('status', 'ok');
     expect(res).toHaveProperty('timestamp');
   });

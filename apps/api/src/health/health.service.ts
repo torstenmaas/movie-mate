@@ -1,13 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class HealthService {
-  getStatus() {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async getStatus() {
+    const db = await this.checkDb(300);
     return {
       status: 'ok' as const,
       timestamp: new Date().toISOString(),
       version: process.env.APP_NAME ? `${process.env.APP_NAME}@${process.env.NODE_ENV ?? 'dev'}` : 'movie-mate',
+      db,
     };
   }
-}
 
+  private async checkDb(timeoutMs: number): Promise<'ok' | 'down'> {
+    try {
+      await Promise.race([
+        this.prisma.$queryRaw`SELECT 1` as unknown as Promise<unknown>,
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), timeoutMs)),
+      ]);
+      return 'ok';
+    } catch {
+      return 'down';
+    }
+  }
+}
