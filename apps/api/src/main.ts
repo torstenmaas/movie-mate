@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
+import { SentryExceptionFilter } from './common/filters/sentry-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -38,6 +39,7 @@ async function bootstrap() {
     Sentry.init({ dsn, environment: config.get('NODE_ENV') });
     process.on('uncaughtException', (e) => { try { Sentry.captureException(e); } catch {} });
     process.on('unhandledRejection', (e) => { try { Sentry.captureException(e); } catch {} });
+    app.useGlobalFilters(new SentryExceptionFilter());
   }
 
   await app.listen(port);

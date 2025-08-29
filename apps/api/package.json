@@ -16,18 +16,19 @@
   },
   "dependencies": {
     "@infra/prisma": "workspace:*",
-    "@nestjs/swagger": "^7.4.2",
-    "swagger-ui-express": "^5.0.1",
-    "nestjs-pino": "^4.1.0",
-    "@sentry/node": "^8.30.0",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
     "@nestjs/platform-express": "^11.1.6",
+    "@nestjs/swagger": "^7.4.2",
+    "@sentry/node": "^8.30.0",
     "@types/express": "^5.0.3",
+    "argon2": "^0.44.0",
     "express": "^5.1.0",
+    "nestjs-pino": "^4.1.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^4.1.5"
   }
 }

@@ -72,13 +72,13 @@
 
 - [ ] Install Passport and @nestjs/passport
 - [ ] Install passport-local strategy
-- [ ] Create auth module
-- [ ] Implement register endpoint with Zod validation
+- [x] Create auth module (2025-08-29)
+- [x] Implement register endpoint with Zod validation (2025-08-29)
 - [ ] Implement login endpoint
 - [ ] Implement logout endpoint
 - [ ] Add JWT token generation
 - [ ] Create auth guards
-- [ ] Add auth tests
+- [x] Add auth tests (register) (2025-08-29)
 - [ ] Document auth endpoints
 
 ## Email Module

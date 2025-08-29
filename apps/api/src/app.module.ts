@@ -4,6 +4,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { HealthController } from './health/health.controller';
 import { HealthService } from './health/health.service';
 import { PrismaService } from './prisma/prisma.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 import { validateEnv } from './config/config.schema';
 
 @Module({
@@ -27,7 +29,7 @@ import { validateEnv } from './config/config.schema';
       },
     }),
   ],
-  controllers: [HealthController],
-  providers: [HealthService, PrismaService],
+  controllers: [HealthController, AuthController],
+  providers: [HealthService, PrismaService, AuthService],
 })
 export class AppModule {}
