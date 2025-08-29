@@ -18,7 +18,7 @@ export class AuthService {
     const email = input.email
     const existing = await this.prisma.user.findUnique({ where: { email } })
     if (existing) {
-      throw new ConflictException({ error: 'AUTH_CONFLICT', message: 'Email already registered.' })
+      throw new ConflictException({ error: 'GEN_CONFLICT', message: 'Email already registered.' })
     }
 
     const hashedPassword = await argon2.hash(input.password, { type: argon2.argon2id })
@@ -44,9 +44,17 @@ export class AuthService {
 
   async login(email: string, password: string, meta?: { userAgent?: string; ip?: string }) {
     const user = await this.prisma.user.findUnique({ where: { email: email.toLowerCase() } })
-    if (!user) throw new UnauthorizedException('Invalid credentials')
+    if (!user)
+      throw new UnauthorizedException({
+        error: 'AUTH_INVALID_CREDENTIALS',
+        message: 'Invalid credentials',
+      })
     const ok = await argon2.verify(user.hashedPassword, password)
-    if (!ok) throw new UnauthorizedException('Invalid credentials')
+    if (!ok)
+      throw new UnauthorizedException({
+        error: 'AUTH_INVALID_CREDENTIALS',
+        message: 'Invalid credentials',
+      })
 
     const tokens = await this.issueTokensWithRefreshRecord(user.id, user.email, undefined, meta)
     return {
@@ -68,11 +76,19 @@ export class AuthService {
       }) as any
       const jti = payload.jti as string | undefined
       const fid = payload.fid as string | undefined
-      if (!jti || !fid) throw new UnauthorizedException('Invalid refresh')
+      if (!jti || !fid)
+        throw new UnauthorizedException({
+          error: 'AUTH_REFRESH_REVOKED',
+          message: 'Invalid or revoked refresh token',
+        })
 
       const repo = (this.prisma as any).refreshToken
       const record = await repo.findUnique({ where: { jti } })
-      if (!record) throw new UnauthorizedException('Invalid refresh')
+      if (!record)
+        throw new UnauthorizedException({
+          error: 'AUTH_REFRESH_REVOKED',
+          message: 'Invalid or revoked refresh token',
+        })
 
       const now = new Date()
       if (record.revokedAt || record.expiresAt <= now) {
@@ -80,11 +96,18 @@ export class AuthService {
           where: { familyId: record.familyId, revokedAt: null },
           data: { revokedAt: now },
         })
-        throw new UnauthorizedException('Invalid refresh')
+        throw new UnauthorizedException({
+          error: 'AUTH_REFRESH_REVOKED',
+          message: 'Invalid or revoked refresh token',
+        })
       }
 
       const user = await this.prisma.user.findUnique({ where: { id: payload.sub } })
-      if (!user) throw new UnauthorizedException('Invalid refresh')
+      if (!user)
+        throw new UnauthorizedException({
+          error: 'AUTH_REFRESH_REVOKED',
+          message: 'Invalid or revoked refresh token',
+        })
 
       const next = await this.issueTokensWithRefreshRecord(
         user.id,
@@ -98,7 +121,10 @@ export class AuthService {
       })
       return next
     } catch {
-      throw new UnauthorizedException('Invalid refresh')
+      throw new UnauthorizedException({
+        error: 'AUTH_REFRESH_REVOKED',
+        message: 'Invalid or revoked refresh token',
+      })
     }
   }
 

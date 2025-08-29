@@ -36,11 +36,21 @@
 - [x] Create .github/workflows directory (2025-08-28)
 - [x] Setup Node.js CI workflow (2025-08-28)
 - [x] Add test job to workflow (2025-08-28)
+- [x] Add E2E (DB, Testcontainers) job (2025-08-29)
 - [ ] Add build job to workflow
 - [ ] Setup Docker build in CI
 - [ ] Configure Dockerfile for NestJS
 - [x] Add Docker compose for local dev (2025-08-28)
 - [ ] Setup webhook for Coolify
+
+### CI v2 (before Beta)
+
+- [ ] CI: Docker build + smoke test (curl /health)
+- [ ] CI: Prisma migrate deploy dry-run against ephemeral DB
+- [ ] CI: Coverage gate ≥ 70% (unit + e2e)
+- [ ] CI: Security scans (npm audit high+, Trivy image)
+- [ ] CI: Node 18/20 matrix
+- [ ] CI: Lint/Typecheck required checks on PRs
 
 ## Coolify Deployment
 
@@ -76,12 +86,11 @@
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [ ] Implement login endpoint
 - [x] Implement login endpoint (2025-08-29)
-- [ ] Implement logout endpoint
-- [x] Implement logout endpoint (stateless) (2025-08-29)
+- [x] Implement logout endpoint (stateless + family revoke) (2025-08-29)
 - [ ] Add JWT token generation
 - [ ] Create auth guards
 - [x] Add auth tests (register) (2025-08-29)
-- [x] Add auth tests (login unit + e2e) (2025-08-29)
+- [x] Add auth tests (login unit + e2e, refresh rotation/reuse, cookie mode) (2025-08-29)
 - [ ] Document auth endpoints
 
 ## Email Module
