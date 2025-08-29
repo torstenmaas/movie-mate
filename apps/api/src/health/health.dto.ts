@@ -10,10 +10,9 @@ export class HealthStatusDto {
   @ApiProperty({ example: 'movie-mate' })
   version!: string
 
-  @ApiProperty({ example: 'a1b2c3d' , required: false, nullable: true })
+  @ApiProperty({ example: 'a1b2c3d', required: false, nullable: true })
   commit?: string
 
   @ApiProperty({ example: 'ok', enum: ['ok', 'down'] })
   db!: 'ok' | 'down'
 }
-

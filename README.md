@@ -5,6 +5,7 @@
 - Health endpoints: `/health` (liveness) and `/health/ready` (503 until DB is reachable).
 
 Dev quickstart:
+
 - Install: `pnpm install`
 - Test: `pnpm test`
 - Typecheck: `pnpm typecheck`

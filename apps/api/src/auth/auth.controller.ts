@@ -9,7 +9,14 @@ import {
   Req,
   UnprocessableEntityException,
 } from '@nestjs/common'
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags, ApiExtension } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiExtension,
+} from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { RegisterSchema } from './dto/register.dto'
 import { LoginSchema } from './dto/login.dto'
