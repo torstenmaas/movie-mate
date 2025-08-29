@@ -21,6 +21,8 @@
 - [x] Configure CORS properly (allowlist from env) (2025-08-29)
 - [x] Add request logging middleware (nestjs-pino) (2025-08-29)
 - [x] Setup config module for env vars (2025-08-28)
+ - [x] Add global exception filter with standardized error shape + traceId (2025-08-29)
+ - [x] Add traceId middleware + x-trace-id propagation (2025-08-29)
 
 ## Testing Setup
 
@@ -30,6 +32,9 @@
 - [x] Create first integration test for /health (2025-08-29)
 - [x] Setup test coverage reporting (2025-08-28)
 - [ ] Add pre-commit hooks for tests
+ - [x] Add e2e test for standardized error shape + traceId (2025-08-29)
+ - [x] Add unit tests: JwtAuthGuard, LoggingInterceptor, Health ready controller (2025-08-29)
+ - [x] Extend exception filter tests for mappings and header traceId (2025-08-29)
 
 ## CI/CD Pipeline
 
@@ -37,18 +42,26 @@
 - [x] Setup Node.js CI workflow (2025-08-28)
 - [x] Add test job to workflow (2025-08-28)
 - [x] Add E2E (DB, Testcontainers) job (2025-08-29)
-- [ ] Add build job to workflow
-- [ ] Setup Docker build in CI
+- [x] Add build job to workflow (2025-08-29)
+- [x] Setup Docker build in CI (2025-08-29)
 - [x] Configure Dockerfile for NestJS (2025-08-29)
 - [x] Add Docker compose for local dev (2025-08-28)
 - [ ] Setup webhook for Coolify
 
+### CI Enhancements (2025-08-29)
+- [x] Docker liveness smoke test (/health)
+- [x] Readiness smoke test with Postgres service container (/health/ready)
+- [x] Trivy image scan (non-blocking)
+- [x] Upload coverage artifacts (lcov, summary) + HTML report
+- [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
+- [x] GHCR publish workflow (manual + tags)
+
 ### CI v2 (before Beta)
 
-- [ ] CI: Docker build + smoke test (curl /health)
+- [x] CI: Docker build + smoke test (curl /health)
 - [ ] CI: Prisma migrate deploy dry-run against ephemeral DB
-- [ ] CI: Coverage gate ≥ 70% (unit + e2e)
-- [ ] CI: Security scans (npm audit high+, Trivy image)
+- [~] CI: Coverage gate ≥ 70% (unit + e2e) — non-blocking in Quality workflow
+- [x] CI: Security scans (npm audit high+, Trivy image)
 - [ ] CI: Node 18/20 matrix
 - [ ] CI: Lint/Typecheck required checks on PRs
 
@@ -78,6 +91,12 @@
 - [ ] Setup migration CI/CD
 - [x] Add database health check (2025-08-29)
 
+## Documentation
+
+- [x] Backend overview: Errors & Tracing section (2025-08-29)
+- [x] Health endpoints Swagger + HealthStatusDto (2025-08-29)
+- [x] README badges + quickstart + coverage notes (2025-08-29)
+
 ## Authentication Module
 
 - [ ] Install Passport and @nestjs/passport
@@ -90,7 +109,7 @@
 - [x] Create auth guards (2025-08-29)
 - [x] Add auth tests (register) (2025-08-29)
 - [x] Add auth tests (login unit + e2e, refresh rotation/reuse, cookie mode) (2025-08-29)
-- [ ] Document auth endpoints
+- [x] Document auth endpoints (Swagger responses + x-error-codes) (2025-08-29)
 
 ## Email Module
 
