@@ -35,7 +35,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Login with email & password' })
   @ApiBody({ schema: { properties: { email: { type: 'string', example: 'user@example.com' }, password: { type: 'string', example: 'VeryStrongPassw0rd' } }, required: ['email','password'] } })
   @ApiResponse({ status: 200, description: 'Returns access & refresh tokens' })
-  async login(@Body() body: unknown) {
+  async login(@Body() body: unknown, @Req() req: any) {
     const parsed = await LoginSchema.safeParseAsync(body);
     if (!parsed.success) {
       return {
@@ -45,14 +45,14 @@ export class AuthController {
         details: parsed.error.flatten(),
       };
     }
-    return this.auth.login(parsed.data.email, parsed.data.password);
+    return this.auth.login(parsed.data.email, parsed.data.password, { userAgent: req.headers['user-agent'], ip: req.ip });
   }
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Refresh JWT token pair' })
   @ApiBody({ schema: { properties: { refreshToken: { type: 'string' } }, required: ['refreshToken'] } })
-  async refresh(@Body() body: unknown) {
+  async refresh(@Body() body: unknown, @Req() req: any) {
     const parsed = await RefreshSchema.safeParseAsync(body);
     if (!parsed.success) {
       return {
@@ -62,7 +62,7 @@ export class AuthController {
         details: parsed.error.flatten(),
       };
     }
-    return this.auth.refresh(parsed.data.refreshToken);
+    return this.auth.refresh(parsed.data.refreshToken, { userAgent: req.headers['user-agent'], ip: req.ip });
   }
 
   @Get('me')
@@ -80,8 +80,21 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout (stateless): client discards tokens' })
   @ApiResponse({ status: 204, description: 'Logged out (stateless)' })
-  async logout() {
-    // Stateless JWT: nothing to revoke on server right now
+  async logout(@Body() body: any) {
+    // If a refreshToken is provided, revoke its family
+    const token = body?.refreshToken as string | undefined;
+    if (token) {
+      try {
+        const payload = this.auth['jwt'].verify(token, { secret: this.auth['config'].get('JWT_REFRESH_SECRET') as string }) as any;
+        const fid = (payload && payload.fid) as string | undefined;
+        if (fid) {
+          const repo = (this.auth['prisma'] as any).refreshToken;
+          await repo.updateMany({ where: { familyId: fid, revokedAt: null }, data: { revokedAt: new Date() } });
+        }
+      } catch {
+        // ignore invalid token on logout
+      }
+    }
     return;
   }
 }

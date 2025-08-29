@@ -14,6 +14,9 @@ describe('AuthService.login', () => {
       user: {
         findUnique: jest.fn().mockResolvedValue({ id: 'u1', email: 'a@b.c', displayName: 'A', hashedPassword: hash, emailVerified: false }),
       },
+      refreshToken: {
+        create: jest.fn().mockResolvedValue({}),
+      },
     } as unknown as PrismaService;
 
     const module = await Test.createTestingModule({
@@ -33,4 +36,3 @@ describe('AuthService.login', () => {
     expect(out).toHaveProperty('refreshToken');
   });
 });
-

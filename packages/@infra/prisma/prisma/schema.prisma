@@ -70,3 +70,24 @@ model PasswordReset {
   @@index([token])
   @@map("password_resets")
 }
+
+model RefreshToken {
+  id           String    @id @default(uuid())
+  userId       String
+  jti          String    @unique
+  familyId     String
+  hashedToken  String
+  userAgent    String?
+  ip           String?
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  replacedById String?
+  createdAt    DateTime  @default(now())
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@index([expiresAt])
+  @@map("refresh_tokens")
+}
