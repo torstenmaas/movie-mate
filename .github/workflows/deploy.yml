@@ -69,3 +69,22 @@ jobs:
         env:
           COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+
+  live-smoke:
+    name: Live Readiness Smoke
+    runs-on: ubuntu-latest
+    environment: PROD
+    needs: [coolify-deploy]
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Readiness smoke (public)
+        run: |
+          URL="https://movie-mate.de/api/v1/health/ready"
+          for i in {1..12}; do
+            code=$(curl -fsS -o /dev/null -w "%{http_code}" "$URL" || true)
+            if [ "$code" = "200" ]; then
+              echo "Ready: $URL (200)"; exit 0
+            fi
+            echo "Attempt $i/12 -> $code; retrying in 10s…"; sleep 10
+          done
+          echo "Live readiness failed for $URL"; exit 1
