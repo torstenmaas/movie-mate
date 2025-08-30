@@ -30,6 +30,17 @@ export function validateEnv(raw: Record<string, unknown>) {
     const issues = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join(', ')
     throw new Error(`Invalid environment configuration: ${issues}`)
   }
+  // Production guard against dev default JWT secrets
+  if (parsed.data.NODE_ENV === 'production') {
+    if (
+      parsed.data.JWT_SECRET === 'dev-secret-change-me' ||
+      parsed.data.JWT_REFRESH_SECRET === 'dev-refresh-secret-change-me'
+    ) {
+      throw new Error(
+        'Unsafe JWT secret configuration in production. Please set strong JWT secrets. See docs/ops-secrets.md.',
+      )
+    }
+  }
   const cors = (parsed.data.CORS_ALLOWLIST || '')
     .split(',')
     .map((s) => s.trim())

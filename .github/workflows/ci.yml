@@ -50,6 +50,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Warn on dev default secrets (non-blocking)
+        run: rg -n "dev-(refresh-)?secret-change-me" -g '!**/.env.example' -g '!docs/**' || true
+
       - name: Test with coverage
         run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --coverageReporters=html --runInBand
 
