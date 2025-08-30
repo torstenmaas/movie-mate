@@ -54,7 +54,7 @@ Milestones
 - [x] Setup Docker build in CI (2025-08-29)
 - [x] Configure Dockerfile for NestJS (2025-08-29)
 - [x] Add Docker compose for local dev (2025-08-28)
-- [ ] Setup webhook for Coolify (after switching to GHCR deploy)
+- [x] Setup webhook for Coolify (after switching to GHCR deploy) (2025-08-30)
 
 ### CI Enhancements (2025-08-29) [M0]
 
@@ -64,22 +64,22 @@ Milestones
 - [x] Upload coverage artifacts (lcov, summary) + HTML report
 - [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
 - [x] GHCR publish workflow (manual + tags)
-- [ ] Deploy workflow (GHCR -> migrate deploy -> Coolify webhook)
+- [x] Deploy workflow (GHCR -> Coolify webhook; gated on CI green) (2025-08-30)
 
 ## Production Readiness [M1]
 
 - [x] Add Helmet (secure HTTP headers) (2025-08-29)
-- [ ] Finalize CORS allowlist (`FRONTEND_URL`, staging)
+- [x] Finalize CORS allowlist (`FRONTEND_URL`, staging) (2025-08-30)
 - [ ] Ensure strong JWT secrets + rotation plan documented
 - [x] Add Docker HEALTHCHECK (2025-08-29)
-- [ ] Non-root container user (optional hardening)
+- [x] Non-root container user (optional hardening) (2025-08-30)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)
 - [ ] DB backup strategy (Coolify/Hetzner), retention policy
 - [ ] Enable Sentry DSN and verify error + performance reporting (can be post‑go‑live)
 - [x] Nightly DB backup workflow (pg_dump via GitHub Actions) (2025-08-29)
 - [x] OpenAPI JSON export script + CI artifact (2025-08-29)
-- [ ] Deploy from GHCR in Coolify (no in-platform build)
-- [ ] Deploy workflow: `prisma migrate deploy` before Coolify redeploy
+- [x] Deploy from GHCR in Coolify (no in-platform build) (2025-08-30)
+- [x] Migrations run in container entrypoint on startup (Coolify network) (2025-08-30)
 - [ ] Live smoke test after deploy (`/health/ready`)
 
 ## Frontend Stability (v1 Contract) [M2]
