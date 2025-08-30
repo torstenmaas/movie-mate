@@ -9,11 +9,10 @@ import * as Sentry from '@sentry/node'
 import helmet from 'helmet'
 
 async function bootstrap() {
-  // Temporarily bootstrap a lightweight Nest app just to get ConfigService
-  // We will re-create the app on the Express adapter below
-  const tempApp = await NestFactory.create(AppModule, { logger: false })
-  const config = tempApp.get(ConfigService)
-  await tempApp.close()
+  // Bootstrap a DI context (no HTTP platform) to access ConfigService
+  const tempCtx = await NestFactory.createApplicationContext(AppModule, { logger: false })
+  const config = tempCtx.get(ConfigService)
+  await tempCtx.close()
 
   // Config values
   const port = config.get<number>('PORT', 3000)
