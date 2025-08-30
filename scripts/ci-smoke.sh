@@ -39,7 +39,7 @@ wait_url() {
 }
 
 echo "[smoke] Phase 1: Liveness without DB"
-docker run -d --rm -p ${PORT}:3000 --name mm-test \
+docker run -d -p ${PORT}:3000 --name mm-test \
   -e JWT_SECRET=test-secret-ci-access-1234567890 \
   -e JWT_REFRESH_SECRET=test-secret-ci-refresh-1234567890 \
   "${TAG}"
@@ -54,8 +54,8 @@ docker stop mm-test >/dev/null 2>&1 || true
 
 echo "[smoke] Phase 2: Readiness with Postgres"
 docker network create mm-net >/dev/null 2>&1 || true
-docker run -d --rm --name mm-db --network mm-net -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=app postgres:16-alpine
-docker run -d --rm --network mm-net -p ${PORT}:3000 --name mm-test \
+docker run -d --name mm-db --network mm-net -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=app postgres:16-alpine
+docker run -d --network mm-net -p ${PORT}:3000 --name mm-test \
   -e DATABASE_URL=postgresql://postgres:postgres@mm-db:5432/app \
   -e JWT_SECRET=test-secret-ci-access-1234567890 \
   -e JWT_REFRESH_SECRET=test-secret-ci-refresh-1234567890 \
