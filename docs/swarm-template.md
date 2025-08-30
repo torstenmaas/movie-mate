@@ -11,8 +11,19 @@ Schritte: - Implementiere die Änderung an <Datei/Ort> … - Ergänze/aktualisie
 PR:
 Titel: <feat|fix|docs(scope): …>
 Beschreibung: - Was und warum - Betroffene Dateien/Module - Tests: neu/angepasst (welche Suiten) - Risiken/Trade-offs - ENV/Docker/Docs-Hinweise (falls nötig)
-Checkliste: - [ ] `pnpm test` lokal grün - [ ] `pnpm typecheck` grün, `pnpm lint` grün - [ ] `pnpm format` ausgeführt - [ ] Docs aktualisiert (falls nötig) - [ ] `.env.example` aktualisiert (falls nötig)
-Grenzen: - Kein Push nach main (nur PR) - Keine Deploy‑Trigger; Deploy läuft pipeline‑gesteuert - Keine Secrets
+Checkliste:
+
+- [ ] Branch mit git erstellt
+- [ ] PR mit gh erstellt mit Titel/Beschreibung
+- [ ] Code implementiert
+- [ ] Tests neu/angepasst (welche Suiten)
+- [ ] `pnpm test` lokal grün
+- [ ] `pnpm typecheck` grün, `pnpm lint` grün
+- [ ] `pnpm format` ausgeführt
+- [ ] Docs aktualisiert (falls nötig)
+- [ ] `.env.example` aktualisiert (falls nötig)
+
+Grenzen: - Kein Push nach main (nur PR) - Keine Deploy‑Trigger; Deploy läuft pipeline‑gesteuert - Keine Secrets - Kein Update der tasks.md (Queen macht das)
 
 Rückmeldung an Queen:
 

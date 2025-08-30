@@ -44,7 +44,7 @@ jobs:
         run: |
           IMAGE=${{ steps.prep.outputs.image }}
           SHA=${{ steps.prep.outputs.sha }}
-          docker build --build-arg IMAGE_COMMIT="${GITHUB_SHA}" --build-arg SOURCE_COMMIT="${GITHUB_SHA}" -t "$IMAGE:$SHA" -f Dockerfile .
+          docker build --build-arg IMAGE_COMMIT="${GITHUB_SHA}" -t "$IMAGE:$SHA" -f Dockerfile .
           docker tag "$IMAGE:$SHA" "$IMAGE:main"
           if [ -n "${{ github.event.inputs.tag }}" ]; then docker tag "$IMAGE:$SHA" "$IMAGE:${{ github.event.inputs.tag }}"; fi
           docker push "$IMAGE:$SHA"
