@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser'
 import * as Sentry from '@sentry/node'
 import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
 import { randomUUID } from 'crypto'
+import helmet from 'helmet'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -18,6 +19,14 @@ async function bootstrap() {
 
   // CORS
   const allow = new Set(origins)
+  // Security headers
+  const enableSwagger = config.get<string>('ENABLE_SWAGGER', 'false') === 'true'
+  app.use(
+    helmet({
+      contentSecurityPolicy: enableSwagger ? false : undefined,
+      crossOriginEmbedderPolicy: enableSwagger ? false : undefined,
+    }),
+  )
   app.enableCors({
     origin: (origin: string | undefined, cb: (err: Error | null, allow?: boolean) => void) => {
       if (!origin) return cb(null, true)
@@ -28,7 +37,6 @@ async function bootstrap() {
   })
 
   // Swagger (optional)
-  const enableSwagger = config.get<string>('ENABLE_SWAGGER', 'false') === 'true'
   if (enableSwagger) {
     const doc = new DocumentBuilder()
       .setTitle('Movie Mate API')

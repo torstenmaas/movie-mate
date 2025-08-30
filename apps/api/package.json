@@ -29,6 +29,7 @@
     "argon2": "^0.44.0",
     "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
+    "helmet": "^7.1.0",
     "nestjs-pino": "^4.1.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
