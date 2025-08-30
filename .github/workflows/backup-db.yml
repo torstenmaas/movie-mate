@@ -8,31 +8,27 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: Install PostgreSQL client
-        if: ${{ env.DATABASE_URL != '' }}
         run: |
           sudo apt-get update -y
           sudo apt-get install -y postgresql-client
 
       - name: Dump database
-        if: ${{ env.DATABASE_URL != '' }}
         env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "Skipping backup: secrets.DATABASE_URL not set."
+            exit 0
+          fi
           mkdir -p backup
           pg_dump --dbname="$DATABASE_URL" -F c -Z 9 -f backup/db_$(date +%Y-%m-%d).dump
 
       - name: Upload backup artifact
-        if: ${{ env.DATABASE_URL != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: pg-dump
           path: backup/*.dump
           retention-days: 14
-
-      - name: Skip (DATABASE_URL not configured)
-        if: ${{ env.DATABASE_URL == '' }}
-        run: echo "Skipping backup: secrets.DATABASE_URL not set."
+          if-no-files-found: ignore
