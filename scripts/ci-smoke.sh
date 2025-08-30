@@ -54,6 +54,9 @@ if ! wait_url "${HEALTH_URL}" "${RETRIES_LIVE}" "${SLEEP_SECS}"; then
 fi
 
 docker stop mm-test >/dev/null 2>&1 || true
+# ensure container name is free before reusing
+docker rm -f mm-test >/dev/null 2>&1 || true
+sleep 1
 
 echo "[smoke] Phase 2: Readiness with Postgres"
 docker network create mm-net >/dev/null 2>&1 || true
