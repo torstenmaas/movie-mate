@@ -6,8 +6,6 @@ import { ConfigService } from '@nestjs/config'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import * as Sentry from '@sentry/node'
-import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
-import { randomUUID } from 'crypto'
 import helmet from 'helmet'
 import express from 'express'
 import { ExpressAdapter } from '@nestjs/platform-express'
@@ -16,7 +14,8 @@ async function bootstrap() {
   // Pre-create Express app to attach Sentry handlers before Nest
   const expressApp = express()
 
-  // Bootstrap a temporary Nest app to access ConfigService
+  // Temporarily bootstrap a lightweight Nest app just to get ConfigService
+  // We will re-create the app on the Express adapter below
   const tempApp = await NestFactory.create(AppModule, { logger: false })
   const config = tempApp.get(ConfigService)
   await tempApp.close()
@@ -92,16 +91,7 @@ async function bootstrap() {
     SwaggerModule.setup('/api/v1/docs', app, document)
   }
 
-  // Attach a simple traceId to each request and response
-  app.use((req: any, res: any, next: any) => {
-    const headerId = (req.headers['x-trace-id'] || req.headers['x-request-id']) as
-      | string
-      | undefined
-    const traceId = headerId || randomUUID()
-    req.traceId = traceId
-    res.setHeader('x-trace-id', traceId)
-    next()
-  })
+  // traceId is managed via traceIdMiddleware in AppModule
 
   // Cookies for refresh flow (optional)
   if (config.get<string>('REFRESH_TOKEN_COOKIE') === 'true') {
@@ -113,10 +103,9 @@ async function bootstrap() {
     Sentry.setupExpressErrorHandler(expressApp)
   }
 
-  // Global error filter (includes Sentry capture when initialized)
-  app.useGlobalFilters(new SentryExceptionFilter())
+  // Global error filter provided via APP_FILTER in AppModule
 
-  // Optional setup verification event
+  // Optional one-time verification event
   if (dsn && verifySetup) {
     try {
       Sentry.captureMessage('sentry-setup-ok', 'info')

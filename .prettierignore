@@ -1,0 +1,3 @@
+# Ignore generated Prisma client (do not format)
+packages/@infra/prisma/client/
+
