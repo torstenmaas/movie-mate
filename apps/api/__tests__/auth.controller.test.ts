@@ -49,8 +49,14 @@ describe('AuthController (unit)', () => {
 
     const controller = module.get(AuthController)
     const req: any = { headers: { 'user-agent': 'jest' }, ip: '127.0.0.1' }
-    const result = await controller.login({ email: user.email, password: 'VeryStrongPassw0rd' }, req)
-    expect(login).toHaveBeenCalledWith(user.email, 'VeryStrongPassw0rd', { userAgent: 'jest', ip: '127.0.0.1' })
+    const result = await controller.login(
+      { email: user.email, password: 'VeryStrongPassw0rd' },
+      req,
+    )
+    expect(login).toHaveBeenCalledWith(user.email, 'VeryStrongPassw0rd', {
+      userAgent: 'jest',
+      ip: '127.0.0.1',
+    })
     expect(result).toEqual(loginResult)
   })
 

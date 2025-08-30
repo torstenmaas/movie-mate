@@ -8,7 +8,7 @@
 - Error codes: see `docs/error-codes.md` for stable codes and response shape.
 - Health endpoints: `/health` (liveness) and `/health/ready` (503 until DB is reachable).
 - CI Coverage: erzeugt in CI und Quality als Artefakt (`coverage/lcov.info`, `coverage-summary.json`).
- - CI Richtlinien: siehe `docs/ci-guidelines.md` (Required Checks auf PRs, Jobs, Artefakte).
+- CI Richtlinien: siehe `docs/ci-guidelines.md` (Required Checks auf PRs, Jobs, Artefakte).
 
 Dev quickstart:
 

@@ -5,6 +5,7 @@ This doc summarizes the practical setup we use and how to enforce quality on Pul
 ## Required Checks on PRs (Branch Protection)
 
 Recommended to enable on `main`:
+
 - CI (ci.yml)
   - build-test
   - E2E (DB, Testcontainers)
@@ -12,14 +13,16 @@ Recommended to enable on `main`:
 - Lint/Typecheck are inside CI build-test; making the entire job required is sufficient.
 
 Optional (keep non-blocking):
+
 - Quality (quality.yml)
   - Coverage gate (≥ 70% lines) — advisory only
   - pnpm audit (high)
 
 How to configure:
-1) GitHub → Settings → Branches → Branch protection rules → Add rule.
-2) Protect matching branch: `main`.
-3) Enable:
+
+1. GitHub → Settings → Branches → Branch protection rules → Add rule.
+2. Protect matching branch: `main`.
+3. Enable:
    - Require a pull request before merging.
    - Require status checks to pass before merging.
    - Search and select checks:
@@ -27,7 +30,7 @@ How to configure:
      - `CI / E2E (DB, Testcontainers)`
      - `CI / Release Check (Docker build + smoke)`
    - Optionally: “Require branches to be up to date before merging”.
-4) Save.
+4. Save.
 
 ## What Each Job Covers
 
@@ -71,4 +74,3 @@ How to configure:
 - Switch Coolify to deploy from GHCR images built by CI.
 - Add a `deploy` workflow that triggers Coolify after migrations (`prisma migrate deploy`).
 - Add a smoke test against the live environment after deploy (curl `/health/ready`).
-

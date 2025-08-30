@@ -40,7 +40,10 @@ describe('SentryExceptionFilter', () => {
     const filter = new SentryExceptionFilter()
     const { host, resp } = createHost()
     filter.catch(
-      new UnprocessableEntityException({ error: 'GEN_VALIDATION_FAILED', message: 'Invalid input' }),
+      new UnprocessableEntityException({
+        error: 'GEN_VALIDATION_FAILED',
+        message: 'Invalid input',
+      }),
       host,
     )
     expect(resp.code).toBe(422)
@@ -72,7 +75,11 @@ describe('SentryExceptionFilter', () => {
 
   it('uses header x-trace-id if req.traceId missing', () => {
     const filter = new SentryExceptionFilter()
-    const resp: any = { status: (c: number) => resp, json: (b: any) => (resp.payload = b), setHeader: jest.fn() }
+    const resp: any = {
+      status: (c: number) => resp,
+      json: (b: any) => (resp.payload = b),
+      setHeader: jest.fn(),
+    }
     const req: any = { headers: { 'x-trace-id': 'hdr-123' } }
     const host = {
       switchToHttp: () => ({ getResponse: () => resp, getRequest: () => req }),

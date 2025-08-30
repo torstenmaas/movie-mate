@@ -34,7 +34,7 @@ describe('AuthService.refresh (unit error paths)', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: (k: string, d?: any) => (cfg[k] ?? (baseConfig as any)[k] ?? d),
+            get: (k: string, d?: any) => cfg[k] ?? (baseConfig as any)[k] ?? d,
           } as unknown as ConfigService,
         },
       ],
@@ -43,7 +43,13 @@ describe('AuthService.refresh (unit error paths)', () => {
   }
 
   it('throws when token verify fails (catch-all)', async () => {
-    const service = await makeModule({ jwt: { verify: jest.fn(() => { throw new Error('bad') }) } })
+    const service = await makeModule({
+      jwt: {
+        verify: jest.fn(() => {
+          throw new Error('bad')
+        }),
+      },
+    })
     await expect(service.refresh('x')).rejects.toBeTruthy()
   })
 
@@ -65,7 +71,13 @@ describe('AuthService.refresh (unit error paths)', () => {
     const updateMany = jest.fn().mockResolvedValue({})
     const prismaMock = {
       refreshToken: {
-        findUnique: jest.fn().mockResolvedValue({ familyId: 'f1', revokedAt: now, expiresAt: new Date(now.getTime() + 1000) }),
+        findUnique: jest
+          .fn()
+          .mockResolvedValue({
+            familyId: 'f1',
+            revokedAt: now,
+            expiresAt: new Date(now.getTime() + 1000),
+          }),
         updateMany,
       },
     }
@@ -74,14 +86,23 @@ describe('AuthService.refresh (unit error paths)', () => {
       jwt: { verify: jest.fn(() => ({ sub: 'u1', jti: 'j1', fid: 'f1' })) as any },
     })
     await expect(service.refresh('t')).rejects.toBeTruthy()
-    expect(updateMany).toHaveBeenCalledWith({ where: { familyId: 'f1', revokedAt: null }, data: { revokedAt: expect.any(Date) } })
+    expect(updateMany).toHaveBeenCalledWith({
+      where: { familyId: 'f1', revokedAt: null },
+      data: { revokedAt: expect.any(Date) },
+    })
   })
 
   it('revokes family and throws when record expired', async () => {
     const updateMany = jest.fn().mockResolvedValue({})
     const prismaMock = {
       refreshToken: {
-        findUnique: jest.fn().mockResolvedValue({ familyId: 'f1', revokedAt: null, expiresAt: new Date(now.getTime() - 1000) }),
+        findUnique: jest
+          .fn()
+          .mockResolvedValue({
+            familyId: 'f1',
+            revokedAt: null,
+            expiresAt: new Date(now.getTime() - 1000),
+          }),
         updateMany,
       },
     }
@@ -96,7 +117,13 @@ describe('AuthService.refresh (unit error paths)', () => {
   it('throws when user not found', async () => {
     const prismaMock = {
       refreshToken: {
-        findUnique: jest.fn().mockResolvedValue({ familyId: 'f1', revokedAt: null, expiresAt: new Date(now.getTime() + 10_000) }),
+        findUnique: jest
+          .fn()
+          .mockResolvedValue({
+            familyId: 'f1',
+            revokedAt: null,
+            expiresAt: new Date(now.getTime() + 10_000),
+          }),
       },
       user: { findUnique: jest.fn().mockResolvedValue(null) },
     }

@@ -21,8 +21,8 @@
 - [x] Configure CORS properly (allowlist from env) (2025-08-29)
 - [x] Add request logging middleware (nestjs-pino) (2025-08-29)
 - [x] Setup config module for env vars (2025-08-28)
- - [x] Add global exception filter with standardized error shape + traceId (2025-08-29)
- - [x] Add traceId middleware + x-trace-id propagation (2025-08-29)
+- [x] Add global exception filter with standardized error shape + traceId (2025-08-29)
+- [x] Add traceId middleware + x-trace-id propagation (2025-08-29)
 
 ## Testing Setup
 
@@ -32,9 +32,9 @@
 - [x] Create first integration test for /health (2025-08-29)
 - [x] Setup test coverage reporting (2025-08-28)
 - [ ] Add pre-commit hooks for tests
- - [x] Add e2e test for standardized error shape + traceId (2025-08-29)
- - [x] Add unit tests: JwtAuthGuard, LoggingInterceptor, Health ready controller (2025-08-29)
- - [x] Extend exception filter tests for mappings and header traceId (2025-08-29)
+- [x] Add e2e test for standardized error shape + traceId (2025-08-29)
+- [x] Add unit tests: JwtAuthGuard, LoggingInterceptor, Health ready controller (2025-08-29)
+- [x] Extend exception filter tests for mappings and header traceId (2025-08-29)
 
 ## CI/CD Pipeline
 
@@ -49,6 +49,7 @@
 - [ ] Setup webhook for Coolify
 
 ### CI Enhancements (2025-08-29)
+
 - [x] Docker liveness smoke test (/health)
 - [x] Readiness smoke test with Postgres service container (/health/ready)
 - [x] Trivy image scan (non-blocking)

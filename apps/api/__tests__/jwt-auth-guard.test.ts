@@ -7,7 +7,7 @@ import { UnauthorizedException, ExecutionContext } from '@nestjs/common'
 
 function mockContext(headers: Record<string, any>): ExecutionContext {
   return {
-    switchToHttp: () => ({ getRequest: () => ({ headers }) } as any),
+    switchToHttp: () => ({ getRequest: () => ({ headers }) }) as any,
   } as unknown as ExecutionContext
 }
 
@@ -52,4 +52,3 @@ describe('JwtAuthGuard', () => {
     expect(guard.canActivate(mockContext({ authorization: `Bearer ${token}` }))).toBe(true)
   })
 })
-

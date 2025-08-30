@@ -10,7 +10,9 @@ describe('HealthController.ready', () => {
       providers: [
         {
           provide: HealthService,
-          useValue: { getStatus: async () => ({ status: 'ok', timestamp: '', version: 'x', db: 'down' }) },
+          useValue: {
+            getStatus: async () => ({ status: 'ok', timestamp: '', version: 'x', db: 'down' }),
+          },
         },
       ],
     }).compile()
@@ -39,7 +41,9 @@ describe('HealthController.ready', () => {
       providers: [
         {
           provide: HealthService,
-          useValue: { getStatus: async () => ({ status: 'ok', timestamp: '', version: 'x', db: 'ok' }) },
+          useValue: {
+            getStatus: async () => ({ status: 'ok', timestamp: '', version: 'x', db: 'ok' }),
+          },
         },
       ],
     }).compile()
@@ -59,4 +63,3 @@ describe('HealthController.ready', () => {
     expect(res.code).toBe(200)
   })
 })
-
