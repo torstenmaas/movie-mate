@@ -1,4 +1,4 @@
-name: Deploy (GHCR -> Coolify)
+name: Deploy to Coolify (GHCR)
 
 on:
   workflow_dispatch:
@@ -9,8 +9,13 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: deploy-main
+  cancel-in-progress: false
+
 jobs:
   build-push:
+    name: Build & Push Image (GHCR)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -45,6 +50,7 @@ jobs:
           if [ -n "${{ github.event.inputs.tag }}" ]; then docker push "$IMAGE:${{ github.event.inputs.tag }}"; fi
 
   migrate-deploy:
+    name: Migrate DB (prisma migrate deploy)
     runs-on: ubuntu-latest
     environment: PROD
     needs: build-push
@@ -67,6 +73,7 @@ jobs:
         run: pnpm -s prisma:migrate:deploy
 
   coolify-deploy:
+    name: Trigger Coolify Deploy Webhook
     runs-on: ubuntu-latest
     environment: PROD
     needs: [build-push, migrate-deploy]
