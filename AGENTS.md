@@ -22,6 +22,46 @@ This document defines how we (you + Codex CLI assistant) work on Movie Mate with
 - You: set priorities, approve plans, run deployments, and provide product direction.
 - Assistant: propose plans, edit files via patches, run safe local commands, and validate with tests/lints.
 
+## Orchestration Model (Queen + Swarm)
+
+- Queen (Controller):
+  - Loads context (tasks.md, planning.md, CI/Deploy workflows, docs/\*).
+  - Plans and decomposes work into atomic, testable Work‑Packages.
+  - Produces precise Swarm prompts (one per PR), with DoD and acceptance criteria.
+  - Aggregates Swarm status (STATUS, SUMMARY, PR, CI, NEXT) and updates tasks.md (with Milestones).
+  - Never writes code; only planning, coordination, and tasks/docs updates.
+
+- Swarm (Implementors):
+  - Takes exactly one Queen prompt, implements an atomic change, opens a PR.
+  - Guarantees local quality gates (typecheck, lint, test, format) before PR.
+  - Returns a concise status to Queen (STATUS, SUMMARY, PR, CI, NEXT).
+
+### Queen Loop
+
+1. Load context (recent tasks, milestones, CI state).
+2. Propose PLAN (serial/parallel), create per‑package Swarm prompts.
+3. Collect Swarm status; review DoD; request fixes if needed.
+4. Update tasks.md (and docs) and propose the next batch.
+
+### Swarm PR Policy
+
+- 1 PR = 1 focused change (no umbrella PRs).
+- Follow conventional commits (feat|fix|chore|docs(scope): …).
+- Update docs (.md) and .env.example as needed.
+- No secrets; no manual deploy; no changes outside scope.
+
+### Quality Gates (for every PR)
+
+- `pnpm typecheck`, `pnpm lint`, `pnpm test` locally green.
+- `pnpm format` before commit.
+- Tests include only what the PR touches (unit/integration/e2e where applicable).
+
+### Deploy & Migrations
+
+- CI (ci.yml) runs tests, coverage, smoke; Deploy (deploy.yml) runs only after CI success.
+- Images are pushed to GHCR; Coolify is triggered via webhook.
+- DB migrations run in the container entrypoint on startup in Coolify, not from GitHub runners.
+
 ## Environment & Safety
 
 - Filesystem: workspace-write (only within repo).
