@@ -10,6 +10,11 @@
 - CI Coverage: erzeugt in CI und Quality als Artefakt (`coverage/lcov.info`, `coverage-summary.json`).
 - CI Richtlinien: siehe `docs/ci-guidelines.md` (Required Checks auf PRs, Jobs, Artefakte).
 
+Deploy & Ops Notes
+
+- Deploy-Workflow: Nach dem Coolify-Deploy läuft ein Live-Smoke gegen `/api/v1/health/ready` (mehrfacher Backoff) und verifiziert den Commit (Short-SHA) via `IMAGE_COMMIT` im Image.
+- Sicherheits-Guard: In Produktion startet die API nicht mit Dev‑JWT‑Defaults (Fail‑Fast). CI enthält zusätzlich einen non‑blocking Warnstep für Dev‑JWT‑Defaults. Details: `docs/ops-secrets.md`.
+
 Formatting & Quality
 
 - Vor Commits: `pnpm format` ausführen; optional `pnpm lint` und `pnpm typecheck`.

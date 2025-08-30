@@ -65,12 +65,14 @@ Milestones
 - [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
 - [x] GHCR publish workflow (manual + tags)
 - [x] Deploy workflow (GHCR -> Coolify webhook; gated on CI green) (2025-08-30)
+- [x] Deploy workflow: Live-Smoke nach Deploy (`/api/v1/health/ready` + Commit-Verifikation via IMAGE_COMMIT) (2025-08-30)
 
 ## Production Readiness [M1]
 
 - [x] Add Helmet (secure HTTP headers) (2025-08-29)
 - [x] Finalize CORS allowlist (`FRONTEND_URL`, staging) (2025-08-30)
 - [x] Ensure strong JWT secrets + rotation plan documented (2025-08-30)
+- [x] Prod-Guard gegen Dev-JWT-Defaults + CI-Warnstep dokumentiert (2025-08-30)
 - [x] Add Docker HEALTHCHECK (2025-08-29)
 - [x] Non-root container user (optional hardening) (2025-08-30)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)

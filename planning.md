@@ -147,6 +147,11 @@ WS /notifications → Authenticate → Subscribe to User Channel → Emit Events
 7. Deploy to Hetzner
 8. Health check
 9. Switch traffic
+
+Operational Notes
+
+- Live-Smoke (CI/Deploy): Nach dem Coolify-Deploy prüft ein CI-Job die öffentliche Readiness unter `/api/v1/health/ready` mit Backoff und verifiziert die Short‑SHA (aus `IMAGE_COMMIT`).
+- Produktions-Guard: Die API startet in `NODE_ENV=production` nicht mit Dev‑JWT‑Defaults (Fail‑Fast). Siehe `docs/ops-secrets.md`.
 ```
 
 ## Environment Variables
