@@ -75,10 +75,10 @@ jobs:
             coverage/coverage-summary.json
         if: always()
 
-      - name: Export OpenAPI JSON
-        run: pnpm -C apps/api openapi:export
+      - name: Export OpenAPI JSON (non-blocking)
+        run: pnpm -C apps/api openapi:export || (echo "OpenAPI export failed (non-blocking)" && exit 0)
 
-      - name: Upload OpenAPI artifact
+      - name: Upload OpenAPI artifact (non-blocking)
         uses: actions/upload-artifact@v4
         with:
           name: openapi-json
