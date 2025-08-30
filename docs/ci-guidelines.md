@@ -7,9 +7,10 @@ This doc summarizes the practical setup we use and how to enforce quality on Pul
 Recommended to enable on `main`:
 
 - CI (ci.yml)
-  - build-test
-  - E2E (DB, Testcontainers)
-  - Release Check (Docker build + liveness/readiness smoke)
+  - CI / Build & Test
+  - CI / E2E (DB, Testcontainers)
+  - CI / Release Check (Docker build + smoke)
+  - CI / Prisma Migrate Dry Run
 - Lint/Typecheck are inside CI build-test; making the entire job required is sufficient.
 
 Optional (keep non-blocking):
@@ -34,8 +35,8 @@ How to configure:
 
 ## What Each Job Covers
 
-- build-test
-  - pnpm install, lint, typecheck
+- Build & Test
+  - pnpm install, format check (`pnpm format:check` fail-fast), lint, typecheck
   - jest with coverage (uploads lcov + summary + HTML)
 - E2E (DB)
   - Runs e2e tests that need a database (Testcontainers)
@@ -44,7 +45,7 @@ How to configure:
   - Trivy image scan (non-blocking)
   - Liveness smoke: `GET /health`
   - Readiness smoke with Postgres container: `GET /health/ready`
-- migrate-dry-run
+- Prisma Migrate Dry Run
   - führt `prisma migrate deploy` gegen eine ephemere Postgres-Instanz aus; fängt Migrationsfehler früh ab; nutzt keine Secrets.
 - Quality (optional)
   - Coverage gate ≥ 70% (non-blocking)
