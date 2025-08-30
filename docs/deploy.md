@@ -69,9 +69,6 @@ Security‑Hinweis:
 - CI enthält einen non‑blocking Warnstep, der Dev‑JWT‑Defaults (`dev-secret-change-me`, `dev-refresh-secret-change-me`) anmeckert.
 - In Produktion startet die API nicht mit Dev‑Defaults für JWT‑Secrets (Fail‑Fast‑Guard). Details: `docs/ops-secrets.md`.
 
-- `.github/workflows/backup-db.yml` (optional)
-  - Nightly `pg_dump` using `DATABASE_URL`. Stores dumps as artifacts (14 days).
-
 ## Rollback
 
 - Coolify → Deployments: select a previous image/tag and redeploy.

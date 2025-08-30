@@ -76,8 +76,7 @@ Milestones
 - [x] Add Docker HEALTHCHECK (2025-08-29)
 - [x] Non-root container user (optional hardening) (2025-08-30)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)
-- [ ] DB backup strategy (Coolify/Hetzner), retention policy
-- [x] Nightly DB backup workflow (pg_dump via GitHub Actions) (2025-08-29)
+
 - [x] OpenAPI JSON export script + CI artifact (2025-08-29)
 - [x] Deploy from GHCR in Coolify (no in-platform build) (2025-08-30)
 - [x] Migrations run in container entrypoint on startup (Coolify network) (2025-08-30)
@@ -134,8 +133,7 @@ Milestones
 
 ## Authentication Module
 
-- [ ] Install Passport and @nestjs/passport (descoped for MVP; JWT guards in place)
-- [ ] Install passport-local strategy (descoped for MVP)
+- [ ] (keine Passport-Änderungen hier; JWT/Guards bestehen)
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [x] Implement login endpoint (2025-08-29)
@@ -159,6 +157,7 @@ Milestones
 
 ## OAuth Integration
 
+- [ ] Install Passport and @nestjs/passport
 - [ ] Install passport-google-oauth20
 - [ ] Install passport-apple
 - [ ] Install passport-facebook
