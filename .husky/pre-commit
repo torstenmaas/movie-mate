@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔧 Running formatter before commit..."
+pnpm format || true
+git add -A
+
+echo "🔎 Lint & Typecheck (advisory)"
+pnpm -s lint || true
+pnpm -s typecheck || true
+

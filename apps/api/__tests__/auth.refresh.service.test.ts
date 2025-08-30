@@ -71,13 +71,11 @@ describe('AuthService.refresh (unit error paths)', () => {
     const updateMany = jest.fn().mockResolvedValue({})
     const prismaMock = {
       refreshToken: {
-        findUnique: jest
-          .fn()
-          .mockResolvedValue({
-            familyId: 'f1',
-            revokedAt: now,
-            expiresAt: new Date(now.getTime() + 1000),
-          }),
+        findUnique: jest.fn().mockResolvedValue({
+          familyId: 'f1',
+          revokedAt: now,
+          expiresAt: new Date(now.getTime() + 1000),
+        }),
         updateMany,
       },
     }
@@ -96,13 +94,11 @@ describe('AuthService.refresh (unit error paths)', () => {
     const updateMany = jest.fn().mockResolvedValue({})
     const prismaMock = {
       refreshToken: {
-        findUnique: jest
-          .fn()
-          .mockResolvedValue({
-            familyId: 'f1',
-            revokedAt: null,
-            expiresAt: new Date(now.getTime() - 1000),
-          }),
+        findUnique: jest.fn().mockResolvedValue({
+          familyId: 'f1',
+          revokedAt: null,
+          expiresAt: new Date(now.getTime() - 1000),
+        }),
         updateMany,
       },
     }
@@ -117,13 +113,11 @@ describe('AuthService.refresh (unit error paths)', () => {
   it('throws when user not found', async () => {
     const prismaMock = {
       refreshToken: {
-        findUnique: jest
-          .fn()
-          .mockResolvedValue({
-            familyId: 'f1',
-            revokedAt: null,
-            expiresAt: new Date(now.getTime() + 10_000),
-          }),
+        findUnique: jest.fn().mockResolvedValue({
+          familyId: 'f1',
+          revokedAt: null,
+          expiresAt: new Date(now.getTime() + 10_000),
+        }),
       },
       user: { findUnique: jest.fn().mockResolvedValue(null) },
     }

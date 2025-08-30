@@ -35,7 +35,7 @@
 - **Cache**: None initially - Add Redis when needed
 - **Validation**: Zod - Universal validation (Backend + Frontend)
 - **Testing**: Jest + Supertest
-- **Docs**: Swagger/OpenAPI
+- **Docs**: Swagger/OpenAPI; export OpenAPI JSON for SDKs
 - **Email**: React Email + Resend - Modern email stack
 
 ### Infrastructure
@@ -200,3 +200,8 @@ FRONTEND_URL=https://moviemate.app
 - 2025-08-25: Zod for universal validation (backend + frontend)
 - 2025-08-25: React Email + Resend for transactional emails
 - 2025-08-25: Minimal user model (email + displayName only)
+
+## API Versioning
+
+- Expose endpoints under `/api/v1/*` (path versioning) to allow non‑breaking evolution.
+- Freeze v1 contract for frontend clients (Web + Mobile). Breaking changes → `/api/v2`.

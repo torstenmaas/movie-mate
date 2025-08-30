@@ -57,6 +57,30 @@
 - [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
 - [x] GHCR publish workflow (manual + tags)
 
+## Production Readiness
+
+- [ ] Add Helmet (secure HTTP headers)
+- [ ] Finalize CORS allowlist (`FRONTEND_URL`, staging)
+- [ ] Ensure strong JWT secrets + rotation plan documented
+- [ ] Add Docker HEALTHCHECK
+- [ ] Non-root container user (optional hardening)
+- [ ] Housekeeping: purge expired `refresh_tokens`
+- [ ] DB backup strategy (Coolify/Hetzner), retention policy
+- [ ] Enable Sentry DSN and verify error + performance reporting
+- [ ] OpenAPI JSON export script + CI artifact
+- [ ] Deploy from GHCR in Coolify (no in-platform build)
+- [ ] Deploy workflow: `prisma migrate deploy` before Coolify redeploy
+- [ ] Live smoke test after deploy (`/health/ready`)
+
+## Frontend Stability (v1 Contract)
+
+- [ ] Introduce `/api/v1/*` base path (path versioning)
+- [ ] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`)
+- [ ] Decide pagination style (cursor recommended) and add to docs
+- [ ] Time format: ISO-8601 UTC documented
+- [ ] Generate TS SDK from OpenAPI in `packages/@contracts` for Web + RN
+- [ ] Document auth token lifetimes in responses (optional `accessExpiresIn`, `refreshExpiresIn`)
+
 ### CI v2 (before Beta)
 
 - [x] CI: Docker build + smoke test (curl /health)

@@ -68,6 +68,7 @@ When assistant will request approval:
 
 - Use patch-based edits; keep diffs small and focused.
 - Follow TS/NestJS conventions in CLAUDE.md and repo.
+- Before committing any changes, run `pnpm format` and ensure a clean `pnpm lint`/`pnpm typecheck` state.
 
 4. Validate
 
@@ -90,6 +91,7 @@ When assistant will request approval:
 - Relevant docs updated (`README.md`, `docs/*`, or comments).
 - No secrets; `.env.example` updated if new env vars.
 - Changes align with PRD, planning, and conventions.
+- Code formatted (`pnpm format`) before commit.
 
 ## Requesting Work (Examples)
 
@@ -135,6 +137,10 @@ When assistant will request approval:
 
 - Initialize NestJS API scaffold in `apps/api` with a health endpoint and tests aligned to `tasks.md`.
 - Or, finalize DB workflows: run `prisma:generate` and add minimal CRUD service tests in `@infra` consumers.
+
+## Formatting & Commits
+
+- Always run `pnpm format` before committing. When in doubt, also run `pnpm lint` and `pnpm typecheck` to avoid CI churn.
 
 ---
 

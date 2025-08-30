@@ -10,6 +10,11 @@
 - CI Coverage: erzeugt in CI und Quality als Artefakt (`coverage/lcov.info`, `coverage-summary.json`).
 - CI Richtlinien: siehe `docs/ci-guidelines.md` (Required Checks auf PRs, Jobs, Artefakte).
 
+Formatting & Quality
+
+- Vor Commits: `pnpm format` ausführen; optional `pnpm lint` und `pnpm typecheck`.
+- Tests lokal: `pnpm exec jest --runInBand` (mit DB: `RUN_DB_TESTS=true`)
+
 Dev quickstart:
 
 - Install: `pnpm install`

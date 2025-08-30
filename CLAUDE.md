@@ -128,6 +128,7 @@ type(scope): description
 - Ask for clarification if requirements unclear
 - Suggest improvements but stay focused
 - Complete one task fully before moving to next
+- Before committing, run `pnpm format` and ensure `pnpm lint`/`pnpm typecheck` are clean to minimize CI churn.
 
 ## Priority Order
 
