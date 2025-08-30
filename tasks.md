@@ -39,7 +39,7 @@ Milestones
 - [x] Add Supertest for e2e tests (library added) (2025-08-28)
 - [x] Create first integration test for /health (2025-08-29)
 - [x] Setup test coverage reporting (2025-08-28)
-- [ ] Add pre-commit hooks for tests
+- [x] Add pre-commit hooks for tests (2025-08-29)
 - [x] Add e2e test for standardized error shape + traceId (2025-08-29)
 - [x] Add unit tests: JwtAuthGuard, LoggingInterceptor, Health ready controller (2025-08-29)
 - [x] Extend exception filter tests for mappings and header traceId (2025-08-29)
@@ -54,7 +54,7 @@ Milestones
 - [x] Setup Docker build in CI (2025-08-29)
 - [x] Configure Dockerfile for NestJS (2025-08-29)
 - [x] Add Docker compose for local dev (2025-08-28)
-- [ ] Setup webhook for Coolify
+- [ ] Setup webhook for Coolify (after switching to GHCR deploy)
 
 ### CI Enhancements (2025-08-29) [M0]
 
@@ -67,15 +67,15 @@ Milestones
 
 ## Production Readiness [M1]
 
-- [ ] Add Helmet (secure HTTP headers)
+- [x] Add Helmet (secure HTTP headers) (2025-08-29)
 - [ ] Finalize CORS allowlist (`FRONTEND_URL`, staging)
 - [ ] Ensure strong JWT secrets + rotation plan documented
-- [ ] Add Docker HEALTHCHECK
+- [x] Add Docker HEALTHCHECK (2025-08-29)
 - [ ] Non-root container user (optional hardening)
-- [ ] Housekeeping: purge expired `refresh_tokens`
+- [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)
 - [ ] DB backup strategy (Coolify/Hetzner), retention policy
 - [ ] Enable Sentry DSN and verify error + performance reporting
-- [ ] OpenAPI JSON export script + CI artifact
+- [x] OpenAPI JSON export script + CI artifact (2025-08-29)
 - [ ] Deploy from GHCR in Coolify (no in-platform build)
 - [ ] Deploy workflow: `prisma migrate deploy` before Coolify redeploy
 - [ ] Live smoke test after deploy (`/health/ready`)

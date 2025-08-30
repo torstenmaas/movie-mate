@@ -5,3 +5,6 @@ git add -A
 echo "🔎 Lint & Typecheck (advisory)"
 pnpm -s lint || true
 pnpm -s typecheck || true
+
+echo "🧪 Running unit tests (fast)"
+pnpm -s test || true
