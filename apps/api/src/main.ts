@@ -9,16 +9,58 @@ import * as Sentry from '@sentry/node'
 import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
 import { randomUUID } from 'crypto'
 import helmet from 'helmet'
+import express from 'express'
+import { ExpressAdapter } from '@nestjs/platform-express'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  // API versioned prefix
-  app.setGlobalPrefix('api/v1')
+  // Pre-create Express app to attach Sentry handlers before Nest
+  const expressApp = express()
 
-  // Config
-  const config = app.get(ConfigService)
+  // Bootstrap a temporary Nest app to access ConfigService
+  const tempApp = await NestFactory.create(AppModule, { logger: false })
+  const config = tempApp.get(ConfigService)
+  await tempApp.close()
+
+  // Config values
   const port = config.get<number>('PORT', 3000)
   const origins = (config.get<string[]>('CORS_ORIGINS', []) || []) as string[]
+  const nodeEnv = config.get<string>('NODE_ENV', 'development')
+  const dsn = config.get<string>('SENTRY_DSN', '')
+  const tracesSampleRate = parseFloat(config.get<string>('SENTRY_TRACES_SAMPLE_RATE', '0.1') || '0')
+  const profilesSampleRate = parseFloat(
+    config.get<string>('SENTRY_PROFILES_SAMPLE_RATE', '0') || '0',
+  )
+  const verifySetup = config.get<string>('SENTRY_VERIFY_SETUP', 'false') === 'true'
+  const imageCommit = (config.get<string>('IMAGE_COMMIT', '') || '').trim()
+  const release = imageCommit ? imageCommit.substring(0, 7) : undefined
+
+  // Sentry init (only if DSN present)
+  if (dsn) {
+    Sentry.init({
+      dsn,
+      environment: nodeEnv,
+      release,
+      tracesSampleRate: isFinite(tracesSampleRate) ? tracesSampleRate : 0,
+      profilesSampleRate: isFinite(profilesSampleRate) ? profilesSampleRate : 0,
+      integrations: [Sentry.expressIntegration()],
+      beforeSend(event) {
+        const url = event.request?.url || ''
+        if (url.includes('/api/v1/health')) return null
+        if (url.includes('/api/v1/docs')) return null
+        return event
+      },
+      beforeSendTransaction(event) {
+        const url = event.request?.url || ''
+        if (url.includes('/api/v1/health')) return null
+        if (url.includes('/api/v1/docs')) return null
+        return event
+      },
+    })
+  }
+
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp))
+  // API versioned prefix
+  app.setGlobalPrefix('api/v1')
 
   // CORS
   const allow = new Set(origins)
@@ -66,24 +108,20 @@ async function bootstrap() {
     app.use(cookieParser())
   }
 
-  // Sentry (minimal init)
-  const dsn = config.get<string>('SENTRY_DSN', '')
+  // Sentry error handler AFTER app setup
   if (dsn) {
-    Sentry.init({ dsn, environment: config.get('NODE_ENV') })
-    process.on('uncaughtException', (e) => {
-      try {
-        Sentry.captureException(e)
-      } catch {}
-    })
-    process.on('unhandledRejection', (e) => {
-      try {
-        Sentry.captureException(e)
-      } catch {}
-    })
+    Sentry.setupExpressErrorHandler(expressApp)
   }
 
   // Global error filter (includes Sentry capture when initialized)
   app.useGlobalFilters(new SentryExceptionFilter())
+
+  // Optional setup verification event
+  if (dsn && verifySetup) {
+    try {
+      Sentry.captureMessage('sentry-setup-ok', 'info')
+    } catch {}
+  }
 
   await app.listen(port)
 }
