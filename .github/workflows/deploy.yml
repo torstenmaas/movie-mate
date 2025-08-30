@@ -44,7 +44,7 @@ jobs:
         run: |
           IMAGE=${{ steps.prep.outputs.image }}
           SHA=${{ steps.prep.outputs.sha }}
-          docker build -t "$IMAGE:$SHA" -f Dockerfile .
+          docker build --build-arg SOURCE_COMMIT="${GITHUB_SHA}" -t "$IMAGE:$SHA" -f Dockerfile .
           docker tag "$IMAGE:$SHA" "$IMAGE:main"
           if [ -n "${{ github.event.inputs.tag }}" ]; then docker tag "$IMAGE:$SHA" "$IMAGE:${{ github.event.inputs.tag }}"; fi
           docker push "$IMAGE:$SHA"
@@ -80,11 +80,21 @@ jobs:
       - name: Readiness smoke (public)
         run: |
           URL="https://movie-mate.de/api/v1/health/ready"
+          EXPECT="${GITHUB_SHA::7}"
+          echo "Expecting commit: $EXPECT"
           for i in {1..12}; do
-            code=$(curl -fsS -o /dev/null -w "%{http_code}" "$URL" || true)
+            # Get JSON and status code
+            body=$(curl -fsS "$URL" -w "\n%{http_code}" || true)
+            code=$(echo "$body" | tail -n1)
+            json=$(echo "$body" | sed '$d')
             if [ "$code" = "200" ]; then
-              echo "Ready: $URL (200)"; exit 0
+              commit=$(echo "$json" | jq -r '.commit // empty' 2>/dev/null || true)
+              if [ -n "$commit" ] && [ "$commit" = "$EXPECT" ]; then
+                echo "Ready: $URL (200, commit $commit)"; exit 0
+              fi
+              echo "Attempt $i/12 -> 200 but commit='$commit' != '$EXPECT'; retrying in 10s…"; sleep 10
+              continue
             fi
             echo "Attempt $i/12 -> $code; retrying in 10s…"; sleep 10
           done
-          echo "Live readiness failed for $URL"; exit 1
+          echo "Live readiness failed for $URL (commit did not match $EXPECT)"; exit 1
