@@ -24,6 +24,7 @@
 - `REFRESH_TOKEN_COOKIE=true` enables httpOnly refresh cookie + CSRF cookie
 - CSRF header: `x-csrf-token` must match `csrfToken` cookie
 - `COOKIE_SECURE`, `COOKIE_DOMAIN`, `REFRESH_COOKIE_NAME`, `CSRF_COOKIE_NAME`, `CSRF_HEADER_NAME`
+  - Security: In production, when `REFRESH_TOKEN_COOKIE=true`, you must set `COOKIE_SECURE=true` (fail-fast guard). Optionally set `COOKIE_DOMAIN` to your app domain for cross-subdomain cookies.
 
 ## Error Codes Alignment
 
