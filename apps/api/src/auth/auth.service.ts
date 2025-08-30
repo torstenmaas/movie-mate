@@ -4,6 +4,7 @@ import type { RegisterInput } from './dto/register.dto'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
 import { randomUUID, createHash } from 'crypto'
+import { uuidv7 } from 'uuidv7'
 
 @Injectable()
 export class AuthService {
@@ -24,6 +25,7 @@ export class AuthService {
     const hashedPassword = await argon2.hash(input.password, { type: (argon2 as any).argon2id })
     const user = await this.prisma.user.create({
       data: {
+        id: uuidv7(),
         email,
         displayName: input.displayName,
         hashedPassword,
@@ -159,6 +161,7 @@ export class AuthService {
     const repo = (this.prisma as any).refreshToken
     await repo.create({
       data: {
+        id: uuidv7(),
         userId: sub,
         jti,
         familyId: fid,

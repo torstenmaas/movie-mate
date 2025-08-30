@@ -86,8 +86,8 @@ Milestones
 
 - [x] Introduce `/api/v1/*` base path (path versioning) (2025-08-29)
 - [x] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`) (2025-08-30)
-- [ ] Decide pagination style (cursor recommended) and add to docs
-- [ ] Time format: ISO-8601 UTC documented
+- [x] Decide pagination style (cursor; createdAt+id cursor) and add to docs (2025-08-30)
+- [x] Time format: ISO-8601 UTC documented (2025-08-30)
 - [ ] Generate TS SDK from OpenAPI in `packages/@contracts` for Web + RN
 - [ ] Document auth token lifetimes in responses (optional `accessExpiresIn`, `refreshExpiresIn`)
 
@@ -133,7 +133,6 @@ Milestones
 
 ## Authentication Module
 
-- [ ] (keine Passport-Änderungen hier; JWT/Guards bestehen)
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [x] Implement login endpoint (2025-08-29)

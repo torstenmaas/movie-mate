@@ -44,6 +44,30 @@
 
 Observability
 
+## IDs
+
+- Neue Entitäten verwenden UUIDv7 (zeitlich sortierbar). Der DB-Typ bleibt Postgres `uuid`.
+- Vorteile: stabile zeitliche Ordnung ohne Zusatzfelder; gute Index-Lokalität.
+- Hinweis: Ältere/Testdaten können noch UUIDv4 sein; Sortierung/Cursor berücksichtigen beide.
+
+## Pagination
+
+- Stil: Cursor-basiert mit opaken Cursorn.
+- Query-Params: `limit` (1–100; Default 20), `cursor` (optional).
+- Sortierung: `createdAt DESC, id DESC` (UUIDv7 erlaubt Ordnung über `id`; `createdAt` dient als Tie-Breaker und für v4-Kompatibilität).
+- Response-Shape:
+  - `items`: Ergebnisliste
+  - `pageInfo`: `{ nextCursor?: string, prevCursor?: string, hasNextPage: boolean, hasPrevPage: boolean }`
+- Header: Zusätzlich `Link`-Header (`rel="next"|"prev"`) setzen.
+- Cursor: Opaque, URL-sicher Base64 von `{ id, createdAt }`. Ungültig → 422 `GEN_VALIDATION_FAILED`.
+- Fehler: `limit` außerhalb Range → 422.
+
+## Time Format
+
+- Alle Zeitstempel sind ISO-8601 UTC mit Millisekunden und `Z`-Suffix (z. B. `2025-08-30T18:24:15.123Z`).
+- Einheitliche Feldnamen: `createdAt`, `updatedAt`, `expiresAt`, `revokedAt`.
+- Eingaben (Filter) akzeptieren ISO-8601 UTC und werden serverseitig nach UTC normalisiert.
+
 ## ENV (excerpt)
 
 - JWT_SECRET, JWT_EXPIRES_IN
