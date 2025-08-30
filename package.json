@@ -14,6 +14,8 @@
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "test": "jest --passWithNoTests",
     "test:db": "RUN_DB_TESTS=true jest --passWithNoTests --detectOpenHandles",
+    "docker:build": "docker build -t movie-mate:local -f Dockerfile .",
+    "docker:smoke": "bash scripts/ci-smoke.sh",
     "prepare": "husky install || true",
     "prisma:generate": "pnpm exec prisma generate --schema packages/@infra/prisma/prisma/schema.prisma",
     "prisma:migrate:dev": "dotenv -e .env -- pnpm exec prisma migrate dev --schema packages/@infra/prisma/prisma/schema.prisma",
