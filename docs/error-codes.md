@@ -5,9 +5,9 @@
 
 ```json
 {
+  "statusCode": 409,
   "error": "FRIEND_REQUEST_DUPLICATE",
   "message": "Friendship already exists.",
-  "status": 409,
   "details": { "userId": "..." }
 }
 ```

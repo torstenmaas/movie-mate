@@ -75,6 +75,16 @@ jobs:
             coverage/coverage-summary.json
         if: always()
 
+      - name: Export OpenAPI JSON
+        run: pnpm -C apps/api openapi:export
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-json
+          path: apps/api/openapi.json
+        if: always()
+
   e2e-db:
     name: E2E (DB, Testcontainers)
     runs-on: ubuntu-latest

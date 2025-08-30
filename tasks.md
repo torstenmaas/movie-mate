@@ -1,5 +1,13 @@
 # TASKS.md - Development Tasks
 
+Milestones
+
+- [M0] Infra/CI foundation
+- [M1] Production Readiness (go‑live blockers)
+- [M2] Frontend Stability (v1 API contract & SDK)
+- [M3] OAuth integrations
+- [M4] WebSockets foundation
+
 ## Setup Phase
 
 - [x] Initialize monorepo structure with npm workspaces (2025-08-28)
@@ -48,7 +56,7 @@
 - [x] Add Docker compose for local dev (2025-08-28)
 - [ ] Setup webhook for Coolify
 
-### CI Enhancements (2025-08-29)
+### CI Enhancements (2025-08-29) [M0]
 
 - [x] Docker liveness smoke test (/health)
 - [x] Readiness smoke test with Postgres service container (/health/ready)
@@ -57,7 +65,7 @@
 - [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
 - [x] GHCR publish workflow (manual + tags)
 
-## Production Readiness
+## Production Readiness [M1]
 
 - [ ] Add Helmet (secure HTTP headers)
 - [ ] Finalize CORS allowlist (`FRONTEND_URL`, staging)
@@ -72,7 +80,7 @@
 - [ ] Deploy workflow: `prisma migrate deploy` before Coolify redeploy
 - [ ] Live smoke test after deploy (`/health/ready`)
 
-## Frontend Stability (v1 Contract)
+## Frontend Stability (v1 Contract) [M2]
 
 - [ ] Introduce `/api/v1/*` base path (path versioning)
 - [ ] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`)
