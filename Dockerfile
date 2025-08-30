@@ -15,6 +15,10 @@ COPY apps ./apps
 COPY packages ./packages
 COPY scripts ./scripts
 
+# Inject source commit into the image for health reporting
+ARG SOURCE_COMMIT=unknown
+ENV SOURCE_COMMIT=$SOURCE_COMMIT
+
 # Install and build
 RUN pnpm install --frozen-lockfile=false \
  && pnpm -C apps/api build \
