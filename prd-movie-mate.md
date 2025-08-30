@@ -53,10 +53,10 @@ Menschen wollen gemeinsam Filme/Serien schauen, aber die Koordination ist chaoti
 
 - User Registration/Login (Email, Google, Apple)
 - Basic Profile
-- TMDB Integration
 
 ### Phase 2: Core Features
 
+- TMDB Integration
 - Watchlist Management
 - Friend System
 - Invitations
