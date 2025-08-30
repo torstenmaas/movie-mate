@@ -116,7 +116,7 @@ Milestones
 ## Database Layer
 
 - [x] Initialize Prisma + seed scripts (2025-08-25)
-- [ ] Create database schema module
+- [x] Prisma schema defined and PrismaService wired (2025-08-30)
 - [x] Add migration scripts (2025-08-25)
 - [x] Create user entity with email/displayName (2025-08-25)
 - [x] Create session entity (2025-08-25)

@@ -4,6 +4,11 @@ ENV NODE_ENV=production
 RUN corepack enable
 WORKDIR /app
 
+# Add curl for container-level healthchecks (Coolify) and CA certs
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
 # Install deps in a clean layer
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps ./apps
