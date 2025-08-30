@@ -61,8 +61,13 @@ curl -i -X POST \
 - `.github/workflows/deploy.yml`
   - `build-push`: build + push image to GHCR (läuft automatisch nur, wenn CI grün ist; sonst nur manuell).
   - `coolify-deploy`: POST to `COOLIFY_WEBHOOK_URL` (adds `Authorization: Bearer` if token provided).
-  - `live-smoke`: prüft nach dem Deploy bis zu 12× (10s Backoff) die öffentliche Readiness unter `/api/v1/health/ready` und verifiziert zusätzlich, dass das Feld `commit` dem aktuell gebauten Commit (`${GITHUB_SHA::7}`) entspricht. Der Commit wird beim Build als `IMAGE_COMMIT` ins Image gebacken (und kompatibel auch als `SOURCE_COMMIT` gesetzt).
+  - `live-smoke`: prüft nach dem Deploy bis zu 12× (10s Backoff) die öffentliche Readiness unter `/api/v1/health/ready` und verifiziert, dass das Feld `commit` dem aktuell gebauten Commit (`${GITHUB_SHA::7}`) entspricht; der Commit wird beim Build als `IMAGE_COMMIT` ins Image gebacken (der Health‑Endpoint ignoriert `HEAD`).
   - Hinweis: DB‑Migrationen laufen im Container‑Entrypoint (siehe Dockerfile `ENTRYPOINT scripts/docker-entry.sh`), daher ist kein DB‑Zugriff vom GitHub Runner nötig.
+
+Security‑Hinweis:
+
+- CI enthält einen non‑blocking Warnstep, der Dev‑JWT‑Defaults (`dev-secret-change-me`, `dev-refresh-secret-change-me`) anmeckert.
+- In Produktion startet die API nicht mit Dev‑Defaults für JWT‑Secrets (Fail‑Fast‑Guard). Details: `docs/ops-secrets.md`.
 
 - `.github/workflows/backup-db.yml` (optional)
   - Nightly `pg_dump` using `DATABASE_URL`. Stores dumps as artifacts (14 days).

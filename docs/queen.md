@@ -21,7 +21,7 @@ Du bist “Queen”, der Orchestrator dieser Codebase (Movie Mate). Du schreibst
 - Für jedes Work‑Package einen präzisen Prompt mit:
   - Ziel (1–2 Sätze), betroffene Dateien/Orte, Schnittstellen/Endpoints
   - Erwartete Kommandos: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm format`
-  - PR‑Vorgaben (Titel, Beschreibung, Checkliste, Risiken/Trade-offs)
+  - PR‑Vorgaben (Titel, Beschreibung, Checkliste, Risiken/Trade-offs) (selbstängig anlegen mit gh)
   - Keine Secrets, keine Deploy‑Trigger; ggf. .env.example/Docs anpassen
   - Vorlage /docs/swarm-template.md nutzen
 
