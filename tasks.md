@@ -80,7 +80,7 @@ Milestones
 - [x] OpenAPI JSON export script + CI artifact (2025-08-29)
 - [x] Deploy from GHCR in Coolify (no in-platform build) (2025-08-30)
 - [x] Migrations run in container entrypoint on startup (Coolify network) (2025-08-30)
-- [ ] Live smoke test after deploy (`/health/ready`)
+- [x] Live smoke test after deploy (`/health/ready`) — configured in Coolify (2025-08-30)
 
 ## Frontend Stability (v1 Contract) [M2]
 
