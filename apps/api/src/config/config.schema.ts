@@ -44,6 +44,12 @@ export function validateEnv(raw: Record<string, unknown>) {
         'Unsafe JWT secret configuration in production. Please set strong JWT secrets. See docs/ops-secrets.md.',
       )
     }
+    // Cookie mode must use secure cookies in production
+    if (parsed.data.REFRESH_TOKEN_COOKIE === 'true' && parsed.data.COOKIE_SECURE !== 'true') {
+      throw new Error(
+        'Cookie mode in production requires COOKIE_SECURE=true. See docs/backend-overview.md.',
+      )
+    }
   }
   const cors = (parsed.data.CORS_ALLOWLIST || '')
     .split(',')

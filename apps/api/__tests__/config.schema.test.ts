@@ -40,4 +40,37 @@ describe('Config schema', () => {
     } as any)
     expect(out.NODE_ENV).toBe('production')
   })
+
+  it('throws in production when cookie mode is enabled without secure cookies', () => {
+    expect(() =>
+      validateEnv({
+        NODE_ENV: 'production',
+        JWT_SECRET: 'strong-strong-secret-123',
+        JWT_REFRESH_SECRET: 'strong-strong-refresh-456',
+        REFRESH_TOKEN_COOKIE: 'true',
+        // COOKIE_SECURE omitted -> defaults to 'false'
+      } as any),
+    ).toThrow(/COOKIE_SECURE=true/)
+
+    expect(() =>
+      validateEnv({
+        NODE_ENV: 'production',
+        JWT_SECRET: 'strong-strong-secret-123',
+        JWT_REFRESH_SECRET: 'strong-strong-refresh-456',
+        REFRESH_TOKEN_COOKIE: 'true',
+        COOKIE_SECURE: 'false',
+      } as any),
+    ).toThrow(/COOKIE_SECURE=true/)
+  })
+
+  it('accepts production when cookie mode is enabled and secure cookies are set', () => {
+    const out = validateEnv({
+      NODE_ENV: 'production',
+      JWT_SECRET: 'strong-strong-secret-123',
+      JWT_REFRESH_SECRET: 'strong-strong-refresh-456',
+      REFRESH_TOKEN_COOKIE: 'true',
+      COOKIE_SECURE: 'true',
+    } as any)
+    expect(out.NODE_ENV).toBe('production')
+  })
 })
