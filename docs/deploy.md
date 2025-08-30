@@ -59,9 +59,9 @@ curl -i -X POST \
 ## Workflows used
 
 - `.github/workflows/deploy.yml`
-  - `build-push`: build + push image to GHCR.
-  - `migrate-deploy`: `pnpm prisma:migrate:deploy` (uses `DATABASE_URL`).
+  - `build-push`: build + push image to GHCR (läuft automatisch nur, wenn CI grün ist; sonst nur manuell).
   - `coolify-deploy`: POST to `COOLIFY_WEBHOOK_URL` (adds `Authorization: Bearer` if token provided).
+  - Hinweis: DB‑Migrationen laufen im Container‑Entrypoint (siehe Dockerfile `ENTRYPOINT scripts/docker-entry.sh`), daher ist kein DB‑Zugriff vom GitHub Runner nötig.
 
 - `.github/workflows/backup-db.yml` (optional)
   - Nightly `pg_dump` using `DATABASE_URL`. Stores dumps as artifacts (14 days).

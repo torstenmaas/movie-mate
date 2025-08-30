@@ -6,8 +6,9 @@ on:
       tag:
         description: 'Optional image tag (besides :main and :<sha7>)'
         required: false
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ['CI']
+    types: [completed]
 
 concurrency:
   group: deploy-main
@@ -17,6 +18,7 @@ jobs:
   build-push:
     name: Build & Push Image (GHCR)
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' || github.event_name == 'workflow_dispatch' }}
     permissions:
       contents: read
       packages: write
@@ -49,34 +51,12 @@ jobs:
           docker push "$IMAGE:main"
           if [ -n "${{ github.event.inputs.tag }}" ]; then docker push "$IMAGE:${{ github.event.inputs.tag }}"; fi
 
-  migrate-deploy:
-    name: Migrate DB (prisma migrate deploy)
-    runs-on: ubuntu-latest
-    environment: PROD
-    needs: build-push
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.15.0
-          run_install: true
-      - name: Prisma migrate deploy
-        if: ${{ env.DATABASE_URL != '' }}
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: pnpm -s prisma:migrate:deploy
-
   coolify-deploy:
     name: Trigger Coolify Deploy Webhook
     runs-on: ubuntu-latest
     environment: PROD
-    needs: [build-push, migrate-deploy]
+    needs: [build-push]
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Trigger Coolify Deploy Webhook
         if: ${{ env.COOLIFY_WEBHOOK_URL != '' }}
