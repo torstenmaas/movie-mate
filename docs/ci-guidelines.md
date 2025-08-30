@@ -44,6 +44,8 @@ How to configure:
   - Trivy image scan (non-blocking)
   - Liveness smoke: `GET /health`
   - Readiness smoke with Postgres container: `GET /health/ready`
+- migrate-dry-run
+  - führt `prisma migrate deploy` gegen eine ephemere Postgres-Instanz aus; fängt Migrationsfehler früh ab; nutzt keine Secrets.
 - Quality (optional)
   - Coverage gate ≥ 70% (non-blocking)
   - pnpm audit (high)

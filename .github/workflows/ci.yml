@@ -201,3 +201,64 @@ jobs:
           docker stop mm-test || true
           docker stop mm-db || true
           docker network rm mm-net || true
+
+  migrate-dry-run:
+    name: Prisma Migrate Dry Run
+    runs-on: ubuntu-latest
+    needs: build-test
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Wait for Postgres (short)
+        run: sleep 3
+
+      - name: Prisma migrate deploy (dry-run DB)
+        run: |
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app \
+          pnpm exec prisma migrate deploy --schema packages/@infra/prisma/prisma/schema.prisma
+
+      - name: Prisma migrate status (non-blocking)
+        run: |
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5432/app \
+          pnpm exec prisma migrate status --schema packages/@infra/prisma/prisma/schema.prisma || true
