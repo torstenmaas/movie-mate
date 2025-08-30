@@ -70,7 +70,7 @@ Milestones
 
 - [x] Add Helmet (secure HTTP headers) (2025-08-29)
 - [x] Finalize CORS allowlist (`FRONTEND_URL`, staging) (2025-08-30)
-- [ ] Ensure strong JWT secrets + rotation plan documented
+- [x] Ensure strong JWT secrets + rotation plan documented (2025-08-30)
 - [x] Add Docker HEALTHCHECK (2025-08-29)
 - [x] Non-root container user (optional hardening) (2025-08-30)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)

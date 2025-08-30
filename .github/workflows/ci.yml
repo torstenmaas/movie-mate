@@ -50,6 +50,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Warn on dev default secrets (non-blocking)
+        run: rg -n "dev-(refresh-)?secret-change-me" -g '!**/.env.example' -g '!docs/**' || true
+
       - name: Test with coverage
         run: pnpm exec jest --coverage --passWithNoTests --coverageReporters=text --coverageReporters=lcov --coverageReporters=json-summary --coverageReporters=html --runInBand
 
@@ -156,7 +159,10 @@ jobs:
 
       - name: Run container and liveness smoke test
         run: |
-          docker run -d --rm -p 3000:3000 --name mm-test movie-mate:test
+          docker run -d --rm -p 3000:3000 --name mm-test \
+            -e JWT_SECRET=test-secret-ci-access-1234567890 \
+            -e JWT_REFRESH_SECRET=test-secret-ci-refresh-1234567890 \
+            movie-mate:test
           for i in {1..30}; do \
             curl -fsS http://127.0.0.1:3000/api/v1/health && exit 0 || sleep 1; \
           done; \
@@ -177,6 +183,8 @@ jobs:
           # Start API with DATABASE_URL pointing to mm-db
           docker run -d --rm --network mm-net -p 3000:3000 --name mm-test \
             -e DATABASE_URL=postgresql://postgres:postgres@mm-db:5432/app \
+            -e JWT_SECRET=test-secret-ci-access-1234567890 \
+            -e JWT_REFRESH_SECRET=test-secret-ci-refresh-1234567890 \
             movie-mate:test
           # Wait for readiness
           for i in {1..60}; do \
