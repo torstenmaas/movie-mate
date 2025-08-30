@@ -54,7 +54,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: PROD
     needs: build-push
-    if: ${{ secrets.DATABASE_URL != '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,6 +67,7 @@ jobs:
           version: 10.15.0
           run_install: true
       - name: Prisma migrate deploy
+        if: ${{ env.DATABASE_URL != '' }}
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm -s prisma:migrate:deploy
@@ -77,9 +77,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: PROD
     needs: [build-push, migrate-deploy]
-    if: ${{ needs.build-push.result == 'success' && (secrets.COOLIFY_WEBHOOK_URL != '') }}
     steps:
       - name: Trigger Coolify Deploy Webhook
+        if: ${{ env.COOLIFY_WEBHOOK_URL != '' }}
         run: |
           if [ -n "$COOLIFY_API_TOKEN" ]; then \
             curl -fsS -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" "$COOLIFY_WEBHOOK_URL" || exit 1; \
