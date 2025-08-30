@@ -7,13 +7,21 @@ export class HealthService {
 
   async getStatus() {
     const db = await this.checkDb(1500)
+    const rawCommit =
+      process.env.IMAGE_COMMIT ||
+      process.env.SOURCE_COMMIT ||
+      process.env.GIT_SHA ||
+      process.env.COMMIT_SHA ||
+      undefined
+    const commitShort =
+      rawCommit && rawCommit !== 'HEAD' ? String(rawCommit).slice(0, 7) : undefined
     return {
       status: 'ok' as const,
       timestamp: new Date().toISOString(),
       version: process.env.APP_NAME
         ? `${process.env.APP_NAME}@${process.env.NODE_ENV ?? 'dev'}`
         : 'movie-mate',
-      commit: process.env.SOURCE_COMMIT ? String(process.env.SOURCE_COMMIT).slice(0, 7) : undefined,
+      commit: commitShort,
       db,
     }
   }

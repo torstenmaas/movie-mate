@@ -61,7 +61,7 @@ curl -i -X POST \
 - `.github/workflows/deploy.yml`
   - `build-push`: build + push image to GHCR (läuft automatisch nur, wenn CI grün ist; sonst nur manuell).
   - `coolify-deploy`: POST to `COOLIFY_WEBHOOK_URL` (adds `Authorization: Bearer` if token provided).
-  - `live-smoke`: prüft nach dem Deploy bis zu 12× (10s Backoff) die öffentliche Readiness unter `/api/v1/health/ready` und verifiziert zusätzlich, dass das Feld `commit` dem aktuell gebauten Commit (`${GITHUB_SHA::7}`) entspricht. Nur dann gilt der Smoke-Test als bestanden.
+  - `live-smoke`: prüft nach dem Deploy bis zu 12× (10s Backoff) die öffentliche Readiness unter `/api/v1/health/ready` und verifiziert zusätzlich, dass das Feld `commit` dem aktuell gebauten Commit (`${GITHUB_SHA::7}`) entspricht. Der Commit wird beim Build als `IMAGE_COMMIT` ins Image gebacken (und kompatibel auch als `SOURCE_COMMIT` gesetzt).
   - Hinweis: DB‑Migrationen laufen im Container‑Entrypoint (siehe Dockerfile `ENTRYPOINT scripts/docker-entry.sh`), daher ist kein DB‑Zugriff vom GitHub Runner nötig.
 
 - `.github/workflows/backup-db.yml` (optional)

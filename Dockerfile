@@ -16,8 +16,10 @@ COPY packages ./packages
 COPY scripts ./scripts
 
 # Inject source commit into the image for health reporting
-ARG SOURCE_COMMIT=unknown
-ENV SOURCE_COMMIT=$SOURCE_COMMIT
+ARG IMAGE_COMMIT=unknown
+ENV IMAGE_COMMIT=$IMAGE_COMMIT
+# Backwards-compat so older runtime env readers still see it
+ENV SOURCE_COMMIT=$IMAGE_COMMIT
 
 # Install and build
 RUN pnpm install --frozen-lockfile=false \
