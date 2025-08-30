@@ -7,7 +7,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import * as Sentry from '@sentry/node'
 import helmet from 'helmet'
-import { ExpressAdapter } from '@nestjs/platform-express'
 
 async function bootstrap() {
   // Temporarily bootstrap a lightweight Nest app just to get ConfigService
@@ -53,8 +52,9 @@ async function bootstrap() {
     })
   }
 
-  // Import express ONLY after Sentry.init so it can instrument Express
+  // Import express and ExpressAdapter ONLY after Sentry.init so instrumentation hooks apply
   const express = (await import('express')).default
+  const { ExpressAdapter } = await import('@nestjs/platform-express')
   // Pre-create Express app to attach Sentry handlers before Nest
   const expressApp = express()
 
