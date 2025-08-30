@@ -1,4 +1,3 @@
-import './instrument'
 import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
 import type { INestApplication } from '@nestjs/common'
@@ -6,7 +5,6 @@ import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
-import * as Sentry from '@sentry/node'
 import helmet from 'helmet'
 
 async function bootstrap() {
@@ -19,15 +17,7 @@ async function bootstrap() {
   const port = config.get<number>('PORT', 3000)
   const origins = (config.get<string[]>('CORS_ORIGINS', []) || []) as string[]
 
-  // Sentry is initialized in ./instrument
-
-  // Import express and ExpressAdapter ONLY after Sentry.init so instrumentation hooks apply
-  const express = (await import('express')).default
-  const { ExpressAdapter } = await import('@nestjs/platform-express')
-  // Pre-create Express app to attach Sentry handlers before Nest
-  const expressApp = express()
-
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(expressApp))
+  const app = await NestFactory.create(AppModule)
   // API versioned prefix
   app.setGlobalPrefix('api/v1')
 
@@ -68,15 +58,7 @@ async function bootstrap() {
     app.use(cookieParser())
   }
 
-  // Sentry error handler AFTER app setup (only if Sentry is initialized)
-  const hasSentry = !!(Sentry as any)?.getCurrentHub?.()?.getClient?.()
-  if (hasSentry) {
-    Sentry.setupExpressErrorHandler(expressApp)
-  }
-
   // Global error filter provided via APP_FILTER in AppModule
-
-  // Verification (if any) is handled in ./instrument
 
   await app.listen(port)
 }

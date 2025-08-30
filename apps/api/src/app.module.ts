@@ -10,9 +10,9 @@ import { AuthService } from './auth/auth.service'
 import { JwtModule } from '@nestjs/jwt'
 import { RateLimitGuard } from './common/guards/rate-limit.guard'
 import { validateEnv } from './config/config.schema'
-import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
 import { traceIdMiddleware } from './common/middlewares/traceid.middleware'
 import { CleanupService } from './maintenance/cleanup.service'
+import { ApiExceptionFilter } from './common/filters/api-exception.filter'
 
 @Module({
   imports: [
@@ -43,7 +43,7 @@ import { CleanupService } from './maintenance/cleanup.service'
     PrismaService,
     AuthService,
     RateLimitGuard,
-    { provide: APP_FILTER, useClass: SentryExceptionFilter },
+    { provide: APP_FILTER, useClass: ApiExceptionFilter },
     CleanupService,
   ],
 })

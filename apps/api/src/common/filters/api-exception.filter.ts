@@ -1,14 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
-import * as Sentry from '@sentry/node'
 
 @Catch()
-export class SentryExceptionFilter implements ExceptionFilter {
+export class ApiExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
-    // Report only if Sentry was initialized
-    try {
-      if ((Sentry as any).getCurrentHub) Sentry.captureException(exception)
-    } catch {}
-
     const ctx = host.switchToHttp()
     const response = ctx.getResponse()
     const request = ctx.getRequest() as any

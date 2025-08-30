@@ -44,8 +44,6 @@
 
 Observability
 
-- Sentry integration details and setup guide: see `docs/observability-sentry.md`.
-
 ## ENV (excerpt)
 
 - JWT_SECRET, JWT_EXPIRES_IN
