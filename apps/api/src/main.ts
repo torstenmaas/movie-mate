@@ -1,3 +1,4 @@
+import './instrument'
 import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
 import type { INestApplication } from '@nestjs/common'
@@ -17,39 +18,8 @@ async function bootstrap() {
   // Config values
   const port = config.get<number>('PORT', 3000)
   const origins = (config.get<string[]>('CORS_ORIGINS', []) || []) as string[]
-  const nodeEnv = config.get<string>('NODE_ENV', 'development')
-  const dsn = config.get<string>('SENTRY_DSN', '')
-  const tracesSampleRate = parseFloat(config.get<string>('SENTRY_TRACES_SAMPLE_RATE', '0.1') || '0')
-  const profilesSampleRate = parseFloat(
-    config.get<string>('SENTRY_PROFILES_SAMPLE_RATE', '0') || '0',
-  )
-  const verifySetup = config.get<string>('SENTRY_VERIFY_SETUP', 'false') === 'true'
-  const imageCommit = (config.get<string>('IMAGE_COMMIT', '') || '').trim()
-  const release = imageCommit ? imageCommit.substring(0, 7) : undefined
 
-  // Sentry init (only if DSN present)
-  if (dsn) {
-    Sentry.init({
-      dsn,
-      environment: nodeEnv,
-      release,
-      tracesSampleRate: isFinite(tracesSampleRate) ? tracesSampleRate : 0,
-      profilesSampleRate: isFinite(profilesSampleRate) ? profilesSampleRate : 0,
-      integrations: [Sentry.expressIntegration()],
-      beforeSend(event) {
-        const url = event.request?.url || ''
-        if (url.includes('/api/v1/health')) return null
-        if (url.includes('/api/v1/docs')) return null
-        return event
-      },
-      beforeSendTransaction(event) {
-        const url = event.request?.url || ''
-        if (url.includes('/api/v1/health')) return null
-        if (url.includes('/api/v1/docs')) return null
-        return event
-      },
-    })
-  }
+  // Sentry is initialized in ./instrument
 
   // Import express and ExpressAdapter ONLY after Sentry.init so instrumentation hooks apply
   const express = (await import('express')).default
@@ -98,19 +68,15 @@ async function bootstrap() {
     app.use(cookieParser())
   }
 
-  // Sentry error handler AFTER app setup
-  if (dsn) {
+  // Sentry error handler AFTER app setup (only if Sentry is initialized)
+  const hasSentry = !!(Sentry as any)?.getCurrentHub?.()?.getClient?.()
+  if (hasSentry) {
     Sentry.setupExpressErrorHandler(expressApp)
   }
 
   // Global error filter provided via APP_FILTER in AppModule
 
-  // Optional one-time verification event
-  if (dsn && verifySetup) {
-    try {
-      Sentry.captureMessage('sentry-setup-ok', 'info')
-    } catch {}
-  }
+  // Verification (if any) is handled in ./instrument
 
   await app.listen(port)
 }
