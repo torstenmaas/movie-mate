@@ -42,6 +42,10 @@
 - Swagger documents error responses for auth endpoints and lists possible codes via `x-error-codes`.
 - Default mappings by status: 401 → `GEN_UNAUTHORIZED`, 403 → `GEN_FORBIDDEN`, 404 → `GEN_NOT_FOUND`, 409 → `GEN_CONFLICT`, 422 → `GEN_VALIDATION_FAILED`, 429 → `GEN_RATE_LIMITED`, 500 → `GEN_INTERNAL`.
 
+Observability
+
+- Sentry integration details and setup guide: see `docs/observability-sentry.md`.
+
 ## ENV (excerpt)
 
 - JWT_SECRET, JWT_EXPIRES_IN
