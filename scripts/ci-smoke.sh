@@ -24,6 +24,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Pre-clean from any previous failed runs
+cleanup || true
+
 wait_url() {
   local url="$1"; shift
   local attempts="$1"; shift
