@@ -64,6 +64,7 @@ Milestones
 - [x] Upload coverage artifacts (lcov, summary) + HTML report
 - [x] Quality workflow: coverage gate ≥ 70% (non-blocking) + pnpm audit (high)
 - [x] GHCR publish workflow (manual + tags)
+- [ ] Deploy workflow (GHCR -> migrate deploy -> Coolify webhook)
 
 ## Production Readiness [M1]
 
@@ -74,7 +75,8 @@ Milestones
 - [ ] Non-root container user (optional hardening)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)
 - [ ] DB backup strategy (Coolify/Hetzner), retention policy
-- [ ] Enable Sentry DSN and verify error + performance reporting
+- [ ] Enable Sentry DSN and verify error + performance reporting (can be post‑go‑live)
+- [x] Nightly DB backup workflow (pg_dump via GitHub Actions) (2025-08-29)
 - [x] OpenAPI JSON export script + CI artifact (2025-08-29)
 - [ ] Deploy from GHCR in Coolify (no in-platform build)
 - [ ] Deploy workflow: `prisma migrate deploy` before Coolify redeploy

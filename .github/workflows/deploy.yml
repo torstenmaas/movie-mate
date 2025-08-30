@@ -1,0 +1,84 @@
+name: Deploy (GHCR -> Coolify)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Optional image tag (besides :main and :<sha7>)'
+        required: false
+  push:
+    branches: [main]
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image refs
+        id: prep
+        run: |
+          IMAGE=$(echo ghcr.io/${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]')
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+          echo "sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Build and push image
+        run: |
+          IMAGE=${{ steps.prep.outputs.image }}
+          SHA=${{ steps.prep.outputs.sha }}
+          docker build -t "$IMAGE:$SHA" -f Dockerfile .
+          docker tag "$IMAGE:$SHA" "$IMAGE:main"
+          if [ -n "${{ github.event.inputs.tag }}" ]; then docker tag "$IMAGE:$SHA" "$IMAGE:${{ github.event.inputs.tag }}"; fi
+          docker push "$IMAGE:$SHA"
+          docker push "$IMAGE:main"
+          if [ -n "${{ github.event.inputs.tag }}" ]; then docker push "$IMAGE:${{ github.event.inputs.tag }}"; fi
+
+  migrate-deploy:
+    runs-on: ubuntu-latest
+    environment: PROD
+    needs: build-push
+    if: ${{ secrets.DATABASE_URL != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+          run_install: true
+      - name: Prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: pnpm -s prisma:migrate:deploy
+
+  coolify-deploy:
+    runs-on: ubuntu-latest
+    environment: PROD
+    needs: [build-push, migrate-deploy]
+    if: ${{ needs.build-push.result == 'success' && (secrets.COOLIFY_WEBHOOK_URL != '') }}
+    steps:
+      - name: Trigger Coolify Deploy Webhook
+        run: |
+          if [ -n "$COOLIFY_API_TOKEN" ]; then \
+            curl -fsS -X POST -H "Authorization: Bearer $COOLIFY_API_TOKEN" "$COOLIFY_WEBHOOK_URL" || exit 1; \
+          else \
+            curl -fsS -X POST "$COOLIFY_WEBHOOK_URL" || exit 1; \
+          fi
+        env:
+          COOLIFY_WEBHOOK_URL: ${{ secrets.COOLIFY_WEBHOOK_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}

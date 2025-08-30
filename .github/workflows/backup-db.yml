@@ -1,0 +1,30 @@
+name: Nightly DB Backup (pg_dump)
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.DATABASE_URL != '' }}
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y postgresql-client
+
+      - name: Dump database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          mkdir -p backup
+          pg_dump --dbname="$DATABASE_URL" -F c -Z 9 -f backup/db_$(date +%Y-%m-%d).dump
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pg-dump
+          path: backup/*.dump
+          retention-days: 14
