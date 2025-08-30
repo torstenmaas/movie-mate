@@ -77,7 +77,6 @@ Milestones
 - [x] Non-root container user (optional hardening) (2025-08-30)
 - [x] Housekeeping: purge expired `refresh_tokens` (2025-08-29)
 - [ ] DB backup strategy (Coolify/Hetzner), retention policy
-- [ ] Enable Sentry DSN and verify error + performance reporting (can be post‑go‑live)
 - [x] Nightly DB backup workflow (pg_dump via GitHub Actions) (2025-08-29)
 - [x] OpenAPI JSON export script + CI artifact (2025-08-29)
 - [x] Deploy from GHCR in Coolify (no in-platform build) (2025-08-30)
@@ -87,7 +86,7 @@ Milestones
 ## Frontend Stability (v1 Contract) [M2]
 
 - [x] Introduce `/api/v1/*` base path (path versioning) (2025-08-29)
-- [ ] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`)
+- [x] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`) (2025-08-30)
 - [ ] Decide pagination style (cursor recommended) and add to docs
 - [ ] Time format: ISO-8601 UTC documented
 - [ ] Generate TS SDK from OpenAPI in `packages/@contracts` for Web + RN
@@ -96,8 +95,8 @@ Milestones
 ### CI v2 (before Beta)
 
 - [x] CI: Docker build + smoke test (curl /health)
-- [ ] CI: Prisma migrate deploy dry-run against ephemeral DB
-- [~] CI: Coverage gate ≥ 70% (unit + e2e) — non-blocking in Quality workflow
+- [x] CI: Prisma migrate deploy dry-run against ephemeral DB (2025-08-30)
+- [x] CI: Coverage gate ≥ 70% (unit + e2e) — non-blocking (2025-08-30)
 - [x] CI: Security scans (npm audit high+, Trivy image)
 - [ ] CI: Node 18/20 matrix
 - [ ] CI: Lint/Typecheck required checks on PRs
@@ -124,7 +123,7 @@ Milestones
 - [x] Create session entity (2025-08-25)
 - [x] Create email verification entity (2025-08-25)
 - [x] Create password reset entity (2025-08-25)
-- [ ] Setup migration CI/CD
+- [x] Setup migration CI/CD (dry-run in CI; migrate on container startup) (2025-08-30)
 - [x] Add database health check (2025-08-29)
 
 ## Documentation
@@ -135,8 +134,8 @@ Milestones
 
 ## Authentication Module
 
-- [ ] Install Passport and @nestjs/passport
-- [ ] Install passport-local strategy
+- [ ] Install Passport and @nestjs/passport (descoped for MVP; JWT guards in place)
+- [ ] Install passport-local strategy (descoped for MVP)
 - [x] Create auth module (2025-08-29)
 - [x] Implement register endpoint with Zod validation (2025-08-29)
 - [x] Implement login endpoint (2025-08-29)
