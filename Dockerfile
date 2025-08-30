@@ -15,5 +15,5 @@ RUN pnpm install --frozen-lockfile=false \
 
 EXPOSE 3000
 ENV PORT=3000
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 CMD node -e "http=require('http');req=http.get({host:'127.0.0.1',port:process.env.PORT||3000,path:'/api/v1/health'},r=>process.exit(r.statusCode===200?0:1));req.on('error',()=>process.exit(1));"
 CMD ["node","apps/api/dist/src/main.js"]
-

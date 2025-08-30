@@ -12,6 +12,7 @@ import { RateLimitGuard } from './common/guards/rate-limit.guard'
 import { validateEnv } from './config/config.schema'
 import { SentryExceptionFilter } from './common/filters/sentry-exception.filter'
 import { traceIdMiddleware } from './common/middlewares/traceid.middleware'
+import { CleanupService } from './maintenance/cleanup.service'
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { traceIdMiddleware } from './common/middlewares/traceid.middleware'
     AuthService,
     RateLimitGuard,
     { provide: APP_FILTER, useClass: SentryExceptionFilter },
+    CleanupService,
   ],
 })
 export class AppModule implements NestModule {

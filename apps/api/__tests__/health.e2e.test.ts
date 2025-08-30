@@ -21,12 +21,12 @@ describeIf('Health (e2e with DB)', () => {
     await app.close()
   })
 
-  itIf('GET /health returns db ok', async () => {
-    const res = await request(app.getHttpServer()).get('/health').expect(200)
+  itIf('GET /api/v1/health returns db ok', async () => {
+    const res = await request(app.getHttpServer()).get('/api/v1/health').expect(200)
     expect(res.body).toHaveProperty('db', 'ok')
   })
 
-  itIf('GET /health/ready returns 200 when DB ok', async () => {
-    await request(app.getHttpServer()).get('/health/ready').expect(200)
+  itIf('GET /api/v1/health/ready returns 200 when DB ok', async () => {
+    await request(app.getHttpServer()).get('/api/v1/health/ready').expect(200)
   })
 })

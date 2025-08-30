@@ -2,13 +2,13 @@
 
 ## Scope Implemented
 
-- Health endpoints: `/health` (tolerant, includes `db`, `commit`) and `/health/ready` (503 if DB down)
+- Health endpoints: `/api/v1/health` (tolerant, includes `db`, `commit`) and `/api/v1/health/ready` (503 if DB down)
 - Auth
-  - `POST /auth/register` (Zod validation, Argon2id hashing)
-  - `POST /auth/login` → Access + Refresh (JWT)
-  - `POST /auth/refresh` → Stateful rotation + reuse detection (Postgres)
-  - `GET /auth/me` (Bearer)
-  - `POST /auth/logout` → 204, optional server-side family revoke
+  - `POST /api/v1/auth/register` (Zod validation, Argon2id hashing)
+  - `POST /api/v1/auth/login` → Access + Refresh (JWT)
+  - `POST /api/v1/auth/refresh` → Stateful rotation + reuse detection (Postgres)
+  - `GET /api/v1/auth/me` (Bearer)
+  - `POST /api/v1/auth/logout` → 204, optional server-side family revoke
 - Config: `@nestjs/config` + Zod validation
 - CORS: Allowlist via `CORS_ALLOWLIST`
 - Logging: `nestjs-pino` JSON logs

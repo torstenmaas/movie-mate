@@ -82,7 +82,7 @@ Milestones
 
 ## Frontend Stability (v1 Contract) [M2]
 
-- [ ] Introduce `/api/v1/*` base path (path versioning)
+- [x] Introduce `/api/v1/*` base path (path versioning) (2025-08-29)
 - [ ] Freeze error response shape (`statusCode`, `error`, `message`, `details?`, `traceId`)
 - [ ] Decide pagination style (cursor recommended) and add to docs
 - [ ] Time format: ISO-8601 UTC documented

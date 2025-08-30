@@ -35,11 +35,14 @@ describeIf('Auth Register (e2e with DB)', () => {
       marketingOptIn: false,
     }
 
-    const res = await request(app.getHttpServer()).post('/auth/register').send(payload).expect(201)
+    const res = await request(app.getHttpServer())
+      .post('/api/v1/auth/register')
+      .send(payload)
+      .expect(201)
     expect(res.body).toHaveProperty('email', email.toLowerCase())
 
     // duplicate should 409
-    await request(app.getHttpServer()).post('/auth/register').send(payload).expect(409)
+    await request(app.getHttpServer()).post('/api/v1/auth/register').send(payload).expect(409)
 
     // cleanup
     await prisma.user.delete({ where: { email } }).catch(() => undefined)

@@ -23,7 +23,7 @@ describeIf('Auth Login (e2e with DB)', () => {
 
     // ensure user exists
     await request(app.getHttpServer())
-      .post('/auth/register')
+      .post('/api/v1/auth/register')
       .send({ email, password, displayName: 'Login E2E', preferredLocale: 'de', acceptTerms: true })
       .expect(201)
   })
@@ -35,17 +35,17 @@ describeIf('Auth Login (e2e with DB)', () => {
 
   itIf('logs in and calls /auth/me', async () => {
     const login = await request(app.getHttpServer())
-      .post('/auth/login')
+      .post('/api/v1/auth/login')
       .send({ email, password })
       .expect(200)
     const access = login.body.accessToken as string
     expect(access).toBeTruthy()
     await request(app.getHttpServer())
-      .get('/auth/me')
+      .get('/api/v1/auth/me')
       .set('Authorization', `Bearer ${access}`)
       .expect(200)
     await request(app.getHttpServer())
-      .post('/auth/logout')
+      .post('/api/v1/auth/logout')
       .set('Authorization', `Bearer ${access}`)
       .expect(204)
   })

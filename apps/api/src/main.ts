@@ -11,6 +11,8 @@ import helmet from 'helmet'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  // API versioned prefix
+  app.setGlobalPrefix('api/v1')
 
   // Config
   const config = app.get(ConfigService)
@@ -44,7 +46,7 @@ async function bootstrap() {
       .addBearerAuth()
       .build()
     const document = SwaggerModule.createDocument(app, doc)
-    SwaggerModule.setup('/docs', app, document)
+    SwaggerModule.setup('/api/v1/docs', app, document)
   }
 
   // Attach a simple traceId to each request and response
