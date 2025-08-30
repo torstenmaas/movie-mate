@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
+import type { INestApplication } from '@nestjs/common'
 import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -94,3 +95,6 @@ if (require.main === module) {
 }
 
 export { bootstrap }
+export function applyGlobalPrefix(app: INestApplication) {
+  app.setGlobalPrefix('api/v1')
+}

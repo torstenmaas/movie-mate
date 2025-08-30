@@ -1600,7 +1600,7 @@ var Hi,
 var Yi = Se((vf, Dl) => {
   Dl.exports = {
     name: '@prisma/internals',
-    version: '6.14.0',
+    version: '6.15.0',
     description: "This package is intended for Prisma's internal use",
     main: 'dist/index.js',
     types: 'dist/index.d.ts',
@@ -1687,8 +1687,8 @@ var Yi = Se((vf, Dl) => {
       '@prisma/generator': 'workspace:*',
       '@prisma/generator-helper': 'workspace:*',
       '@prisma/get-platform': 'workspace:*',
-      '@prisma/prisma-schema-wasm': '6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49',
-      '@prisma/schema-engine-wasm': '6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49',
+      '@prisma/prisma-schema-wasm': '6.15.0-5.85179d7826409ee107a6ba334b5e305ae3fba9fb',
+      '@prisma/schema-engine-wasm': '6.15.0-5.85179d7826409ee107a6ba334b5e305ae3fba9fb',
       '@prisma/schema-files-loader': 'workspace:*',
       arg: '5.0.2',
       prompts: '2.4.2',
@@ -1701,12 +1701,12 @@ var Yi = Se((vf, Dl) => {
 var vn = Se((Ff, Fl) => {
   Fl.exports = {
     name: '@prisma/engines-version',
-    version: '6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49',
+    version: '6.15.0-5.85179d7826409ee107a6ba334b5e305ae3fba9fb',
     main: 'index.js',
     types: 'index.d.ts',
     license: 'Apache-2.0',
     author: 'Tim Suchanek <suchanek@prisma.io>',
-    prisma: { enginesVersion: '717184b7b35ea05dfa71a3236b7af656013e1e49' },
+    prisma: { enginesVersion: '85179d7826409ee107a6ba334b5e305ae3fba9fb' },
     repository: {
       type: 'git',
       url: 'https://github.com/prisma/engines-wrapper.git',
@@ -7026,7 +7026,7 @@ function op({ $type: e, value: t }) {
       _s(t, 'Unknown tagged value')
   }
 }
-var Ns = '6.14.0'
+var Ns = '6.15.0'
 f()
 u()
 c()
@@ -7561,7 +7561,7 @@ p()
 m()
 var Vs = {
   '@prisma/debug': 'workspace:*',
-  '@prisma/engines-version': '6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49',
+  '@prisma/engines-version': '6.15.0-5.85179d7826409ee107a6ba334b5e305ae3fba9fb',
   '@prisma/fetch-engine': 'workspace:*',
   '@prisma/get-platform': 'workspace:*',
 }

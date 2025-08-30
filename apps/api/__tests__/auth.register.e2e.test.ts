@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { AppModule } from '../src/app.module'
+import { applyGlobalPrefix } from '../src/main'
 import { PrismaService } from '../src/prisma/prisma.service'
 
 const RUN_DB = process.env.RUN_DB_TESTS === 'true'
@@ -16,6 +17,7 @@ describeIf('Auth Register (e2e with DB)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile()
     app = moduleRef.createNestApplication()
+    applyGlobalPrefix(app)
     prisma = moduleRef.get(PrismaService)
     await app.init()
   })
